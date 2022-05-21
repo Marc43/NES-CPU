@@ -2,3 +2,5 @@ xsim.dir
 *.log
 *.pb
 *.swp
+*.wdb
+*.jou

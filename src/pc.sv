@@ -1,6 +1,6 @@
 import nes_cpu_pkg::*;
 
-module pc 
+module pc_t
 (
 
     input logic clk_i,
@@ -27,4 +27,4 @@ module pc
         end
     end
 
-endmodule : pc
+endmodule : pc_t

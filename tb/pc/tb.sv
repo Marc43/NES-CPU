@@ -38,6 +38,15 @@ module tb();
 
         while (sampled_pc != 0) @(posedge clk); // Let the PC overflow 
 
+        for (int i = 0; i < 32; i++) begin
+            new_pc = $random();
+            taken_branch = ~taken_branch;
+            @(posedge clk);
+            taken_branch = ~taken_branch;
+        end
+
+        $finish();
+
     end
 
     assert property (@(posedge clk) taken_branch |-> ##1 (sampled_pc == $past(new_pc, 1)));
