@@ -34,9 +34,7 @@ module tb();
     );
 
     initial begin
-        @(posedge rst);
-
-        while (sampled_pc != 0) @(posedge clk); // Let the PC overflow 
+        @(negedge rst);
 
         for (int i = 0; i < 32; i++) begin
             new_pc = $random();
@@ -45,11 +43,18 @@ module tb();
             taken_branch = ~taken_branch;
         end
 
+        new_pc = (2**(MEM_ADDR_SIZE-1));
+        taken_branch = 1'b1;
+        @(posedge clk);
+        taken_branch = 1'b0;
+
+        while (sampled_pc != 0) @(posedge clk); 
+
         $finish();
 
     end
 
-    assert property (@(posedge clk) taken_branch |-> ##1 (sampled_pc == $past(new_pc, 1)));
-    assert property (@(posedge clk) !taken_branch |-> ##1 (sampled_pc == ($past(sampled_pc, 1)-INSTR_SIZE_IN_BYTES)));
+    assert property (@(posedge clk) disable iff (rst) taken_branch |-> ##1 (sampled_pc == $past(new_pc, 1)));
+    assert property (@(posedge clk) disable iff (rst) !(taken_branch) |-> ##1 (sampled_pc == ($past(sampled_pc, 1)+1)));
 
 endmodule : tb

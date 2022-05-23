@@ -1,6 +1,7 @@
 import nes_cpu_pkg::*;
 
 module pc_t
+#(parameter INCREMENT=1)
 (
 
     input logic clk_i,
@@ -22,7 +23,7 @@ module pc_t
                 pc_o <= new_pc_i;
             end
             else begin
-                pc_o <= pc_o + INSTR_SIZE_IN_BYTES;              
+                pc_o <= pc_o + INCREMENT;              
             end
         end
     end
