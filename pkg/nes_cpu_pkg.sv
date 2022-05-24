@@ -13,6 +13,30 @@ package nes_cpu_pkg;
         FETCH_INSTR_READY
     } fetch_state_t;
 
+    // TODO Maybe add an explanation 
+    // for all the addressing modes 
+    // so I have fast reference here
+    enum logic [...]
+    {
+        IMPLIED,
+        ACCUMULATOR,
+        IMMEDIATE,
+        ABSOLUTE,
+        ZERO_PAGE,
+        INDIRECT,
+        ABSOLUTE_INDIRECT,
+        RELATIVE
+    } addressing_mode_t;
+
+    enum logic [...]
+    {
+        A_REG,
+        X_REG
+        Y_REG,
+        SP_REG,
+        P_REG
+    } reg_id_t;
+
     parameter logic[BYTE-1:0] NOP = 8'hEA;
 
 endpackage : nes_cpu_pkg

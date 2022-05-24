@@ -5,19 +5,26 @@ module fetch_t
 
     input logic [BYTE-1:0] instr_byte_i,
 
+    // TODO Needs inputs of registers X, Y 
+    // for the indirect modes, those should
+    // be obtained directly from the
+    // register file.
+
     output logic [(MAX_INSTR_SIZE*BYTE)-1:0] instr_o,
     output logic [$clog2(MAX_INSTR_SIZE)-1:0] instr_size_o,
-    output logic instr_ready_o
+    output logic instr_valid_o
+
+    output logic [(2*BYTE)-1:0] data_o,
+    output logic [$clog2(2)-1:0] data_size_o,
+    output logic data_valid_o
+
 );
 
     /*
-     * The fetch can either retrieve
-     * instructions of 1, 2 or 3 bytes.
+     * The fetch can either retrieve 1, 2 or 3 bytes.
      *
-     * To decide how big the instruction is
-     * while it is fetching it, it will 
-     * require some kind of decoder.
-     *
+     * The opcode is always the first to be fetched, and it
+     * can be followed by 1 or 2 bytes of data.
      */
 
     fetch_state_t state;
@@ -55,4 +62,16 @@ module fetch_t
         end
     end
 
+    // TODO This module does not exist
+    // TODO The signals connected do not exist either
+    decode_addressing_mode_t decoder
+    (
+        .clk_i (clk_i),
+        .rstn_i (rstn_i),
+
+        .instr_i (...),
+        
+        .addressing_mode_o (addressing_mode)
+    );
+    
 endmodule : fetch_t
