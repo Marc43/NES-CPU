@@ -3,29 +3,29 @@ module fetch_t
     input logic clk_i,
     input logic rstn_i,
 
-    input logic [BYTE-1:0] instr_byte_i,
+    // From PC
+    input logic [MEM_ADDR_SIZE-1:0] instr_addr_i,
 
-    // TODO Needs inputs of registers X, Y 
-    // for the indirect modes, those should
-    // be obtained directly from the
-    // register file.
+    // From RF
+    input logic [REG_SIZE-1:0] X_i,
+    input logic [REG_SIZE-1:0] Y_i,
+    
+    // To MEM (TODO ifdef SIMULATION) 
+    output logic [MEM_ADDR_SIZE-1:0] mem_addr_o,
+    // From MEM
+    input logic [(2*BYTE)-1:0] data_i,
 
-    output logic [(MAX_INSTR_SIZE*BYTE)-1:0] instr_o,
-    output logic [$clog2(MAX_INSTR_SIZE)-1:0] instr_size_o,
-    output logic instr_valid_o
-
+    // To ID
     output logic [(2*BYTE)-1:0] data_o,
-    output logic [$clog2(2)-1:0] data_size_o,
-    output logic data_valid_o
+    output logic [BYTE-1:0] instr_o,
+
+    // To control
+    output logic fetch_state_t state_o
 
 );
 
-    /*
-     * The fetch can either retrieve 1, 2 or 3 bytes.
-     *
-     * The opcode is always the first to be fetched, and it
-     * can be followed by 1 or 2 bytes of data.
-     */
+    logic instr_addr, data_addr;
+    logic instr_d, instr_q; // Needed to compute abs, zero page, indirect modes addresses...
 
     fetch_state_t state;
     fetch_state_t next_state;
@@ -44,27 +44,47 @@ module fetch_t
             next_state = FETCH_OPCODE;
         end
         else begin
-            if (
-
+            if (state == FETCH_OPCODE) begin
+                next_state = (addr_mode_needs_mem) ? FETCH_DATA : FETCH_VALID;
+            end
+            else if (state == FETCH_DATA) begin
+                next_state = FETCH_VALID;
+            end
+            else if (state == FETCH_VALID) begin
+                next_state = FETCH_OPCODE;
+            end
         end
     end
 
+    // Here I am assuming I can get data from memory every cycle
+    // This is not a safe assumption at all, maybe I should have 
+    // inputs from memory READY and VALID to indicate if the
+    // memory is READY to accept a memory request, and VALID
+    // indicating if the requested petition is served or not
+    // TBC
     always_comb begin : fetch_state_FSM_outputs
         if (!rstn_i) begin
             instr_o = NOP;
-            instr_size_o = 1;
-            instr_ready_o = 0;
         end
         else begin
-            if (state == FETCH_INSTR_READY) begin
-                instr_ready_o = 1;
+            if (state == FETCH_OPCODE) begin
+                instr_addr = instr_addr_i;
+                data_addr = 16'hBEEF;
+            end
+            else if (state == FETCH_DATA) begin
+                instr_addr = 16'hBEEF;
+                data_addr = ; // FIXME depending on the addressing mode you need to have a different address....
+            end
+            else begin
+                instr_addr = 16'hBEEF;
+                data_addr = 16'hDEAD;
             end
         end
     end
 
     // TODO This module does not exist
     // TODO The signals connected do not exist either
-    decode_addressing_mode_t decoder
+    decoder_t decoder
     (
         .clk_i (clk_i),
         .rstn_i (rstn_i),
@@ -73,5 +93,16 @@ module fetch_t
         
         .addressing_mode_o (addressing_mode)
     );
+
+    always_ff @(posedge clk_i) begin : fetched_instr_ff
+        if (!rstn_i) begin
+            instr_q = NOP;
+        end
+        else begin
+            instr_q <= instr_d;
+        end
+    end
+
+    assign mem_addr_o = (state == FETCH_OPCODE) ? instr_addr : data_addr;
     
 endmodule : fetch_t
