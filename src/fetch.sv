@@ -7,25 +7,34 @@ module fetch_t
     input logic [MEM_ADDR_SIZE-1:0] instr_addr_i,
 
     // From RF
-    input logic [REG_SIZE-1:0] X_i,
-    input logic [REG_SIZE-1:0] Y_i,
+    //input logic [REG_SIZE-1:0] X_i,
+    //input logic [REG_SIZE-1:0] Y_i,
     
     // To MEM (TODO ifdef SIMULATION) 
     output logic [MEM_ADDR_SIZE-1:0] mem_addr_o,
     // From MEM
-    input logic [(2*BYTE)-1:0] data_i,
+    input logic [(2*`BYTE)-1:0] data_i,
 
     // To ID
-    output logic [(2*BYTE)-1:0] data_o,
-    output logic [BYTE-1:0] instr_o,
+    output logic [(2*`BYTE)-1:0] data_o,
+    output logic [`BYTE-1:0] instr_o,
 
     // To control
-    output logic fetch_state_t state_o
+    output fetch_state_t state_o
 
 );
 
-    logic instr_addr, data_addr;
-    logic instr_d, instr_q; // Needed to compute abs, zero page, indirect modes addresses...
+    import nes_cpu_pkg::*;
+    import cpu_6502_ISA_pkg::*;
+
+    logic [MEM_ADDR_SIZE-1:0] mem_addr;
+
+    /*
+     * This module is only reading everything
+     * and forwarding it to the module that 
+     * is in charge to determine the addressing mode
+     * and change data_o in consequence.
+     */
 
     fetch_state_t state;
     fetch_state_t next_state;
@@ -45,9 +54,6 @@ module fetch_t
         end
         else begin
             if (state == FETCH_OPCODE) begin
-                next_state = (addr_mode_needs_mem) ? FETCH_DATA : FETCH_VALID;
-            end
-            else if (state == FETCH_DATA) begin
                 next_state = FETCH_VALID;
             end
             else if (state == FETCH_VALID) begin
@@ -68,41 +74,19 @@ module fetch_t
         end
         else begin
             if (state == FETCH_OPCODE) begin
-                instr_addr = instr_addr_i;
-                data_addr = 16'hBEEF;
+                // PC: 0 | A | - opcode
+                // PC: 1 | B | - data byte 0
+                // PC: 2 | C | - data byte 1
+                mem_addr = instr_addr_i;
             end
-            else if (state == FETCH_DATA) begin
-                instr_addr = 16'hBEEF;
-                data_addr = ; // FIXME depending on the addressing mode you need to have a different address....
-            end
-            else begin
-                instr_addr = 16'hBEEF;
-                data_addr = 16'hDEAD;
+            else if (state == FETCH_VALID) begin
+                instr_o = data_i[`BYTE-1:0];
+                data_o = data_i[(2*`BYTE)-1:`BYTE];
             end
         end
     end
 
-    // TODO This module does not exist
-    // TODO The signals connected do not exist either
-    decoder_t decoder
-    (
-        .clk_i (clk_i),
-        .rstn_i (rstn_i),
-
-        .instr_i (...),
-        
-        .addressing_mode_o (addressing_mode)
-    );
-
-    always_ff @(posedge clk_i) begin : fetched_instr_ff
-        if (!rstn_i) begin
-            instr_q = NOP;
-        end
-        else begin
-            instr_q <= instr_d;
-        end
-    end
-
-    assign mem_addr_o = (state == FETCH_OPCODE) ? instr_addr : data_addr;
+    assign mem_addr_o = mem_addr;
+    assign state_o = state;
     
 endmodule : fetch_t

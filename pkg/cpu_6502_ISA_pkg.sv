@@ -1,4 +1,6 @@
-package 6502_ISA_pkg;
+package cpu_6502_ISA_pkg;
+
+    `include "defines.svh"
 
     // https://www.middle-engine.com/blog/posts/2020/06/23/programming-the-nes-the-6502-in-detail
     // For addressing modes can be quite useful
@@ -14,43 +16,43 @@ package 6502_ISA_pkg;
         RELATIVE
     } addressing_mode_t;
 
-    enum logic [1:0]
+    enum logic [2:0]
     {
         A_REG,
-        X_REG
+        X_REG,
         Y_REG,
         SP_REG,
         P_REG
     } reg_id_t;
 
     // Implicit Instructions 
-    parameter logic [BYTE-1:0] BREAK = 8'h00;
-    parameter logic [BYTE-1:0] RTI = 8'h40;
-    parameter logic [BYTE-1:0] RTS = 8'h60;
+    parameter logic [`BYTE-1:0] BREAK = 8'h00;
+    parameter logic [`BYTE-1:0] RTI = 8'h40;
+    parameter logic [`BYTE-1:0] RTS = 8'h60;
 
-    parameter logic [BYTE-1:0] PHP = 8'h08;
-    parameter logic [BYTE-1:0] CLC = 8'h18;
-    parameter logic [BYTE-1:0] PLP = 8'h28;
-    parameter logic [BYTE-1:0] SEC = 8'h38;
-    parameter logic [BYTE-1:0] PHA = 8'h48
-    parameter logic [BYTE-1:0] CLI = 8'h58
-    parameter logic [BYTE-1:0] PLA = 8'h68
-    parameter logic [BYTE-1:0] SEI = 8'h78
-    parameter logic [BYTE-1:0] DEY = 8'h88
-    parameter logic [BYTE-1:0] TYA = 8'h98
-    parameter logic [BYTE-1:0] TAY = 8'hA8
-    parameter logic [BYTE-1:0] CLV = 8'hB8
-    parameter logic [BYTE-1:0] INY = 8'hC8
-    parameter logic [BYTE-1:0] CLD = 8'hD8
-    parameter logic [BYTE-1:0] INX = 8'hE8
-    parameter logic [BYTE-1:0] SED = 8'hF8
+    parameter logic [`BYTE-1:0] PHP = 8'h08;
+    parameter logic [`BYTE-1:0] CLC = 8'h18;
+    parameter logic [`BYTE-1:0] PLP = 8'h28;
+    parameter logic [`BYTE-1:0] SEC = 8'h38;
+    parameter logic [`BYTE-1:0] PHA = 8'h48;
+    parameter logic [`BYTE-1:0] CLI = 8'h58;
+    parameter logic [`BYTE-1:0] PLA = 8'h68;
+    parameter logic [`BYTE-1:0] SEI = 8'h78;
+    parameter logic [`BYTE-1:0] DEY = 8'h88;
+    parameter logic [`BYTE-1:0] TYA = 8'h98;
+    parameter logic [`BYTE-1:0] TAY = 8'hA8;
+    parameter logic [`BYTE-1:0] CLV = 8'hB8;
+    parameter logic [`BYTE-1:0] INY = 8'hC8;
+    parameter logic [`BYTE-1:0] CLD = 8'hD8;
+    parameter logic [`BYTE-1:0] INX = 8'hE8;
+    parameter logic [`BYTE-1:0] SED = 8'hF8;
 
-    parameter logic [BYTE-1:0] TXA = 8'h8A;
-    parameter logic [BYTE-1:0] TXS = 8'h9A;
-    parameter logic [BYTE-1:0] TAX = 8'hAA;
-    parameter logic [BYTE-1:0] TSX = 8'hBA;
-    parameter logic [BYTE-1:0] DEX = 8'hCA;
-    parameter logic [BYTE-1:0] NOP = 8'hEA;
+    parameter logic [`BYTE-1:0] TXA = 8'h8A;
+    parameter logic [`BYTE-1:0] TXS = 8'h9A;
+    parameter logic [`BYTE-1:0] TAX = 8'hAA;
+    parameter logic [`BYTE-1:0] TSX = 8'hBA;
+    parameter logic [`BYTE-1:0] DEX = 8'hCA;
+    parameter logic [`BYTE-1:0] NOP = 8'hEA;
 
     // Rest of instructions as in:
     // https://llx.com/Neil/a2/opcodes.html
@@ -64,7 +66,6 @@ package 6502_ISA_pkg;
     parameter logic [2:0] LDA = 3'b101;
     parameter logic [2:0] CMP = 3'b110;
     parameter logic [2:0] SBC = 3'b111;
-    parameter logic [2:0] SBC = 3'b000;
 
     // G1       : Group one
     // IND(1|2) : Indexed one or two
@@ -121,4 +122,4 @@ package 6502_ISA_pkg;
     parameter logic [2:0] G3_ZPG_X = 3'b101;
     parameter logic [2:0] G3_ABS_X = 3'b111;
 
-endpackage : 6502_ISA_pkg
+endpackage : cpu_6502_ISA_pkg
