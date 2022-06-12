@@ -10,9 +10,14 @@ package cpu_6502_ISA_pkg;
         ACCUMULATOR,
         IMMEDIATE,
         ABSOLUTE,
+        ABSOLUTE_X,
+        ABSOLUTE_Y,
         ZERO_PAGE,
-        INDIRECT,
-        ABSOLUTE_INDIRECT,
+        ZERO_PAGE_X,
+        ZERO_PAGE_Y,
+        INDIRECT_X, // LDA ($04, X)
+        INDIRECT_Y, // LDA ($04), Y
+        ABSOLUTE_INDIRECT, // JMP ($1234)
         RELATIVE
     } addressing_mode_t;
 
@@ -24,6 +29,15 @@ package cpu_6502_ISA_pkg;
         SP_REG,
         P_REG
     } reg_id_t;
+
+    enum logic [2:0]
+    {
+        FETCH,
+        EX_FOP1, // EXECUTE or Fetch Operand 1 (IND/ABS)
+        FOP2,    // Fetch Operand 2 (IND)
+        EX_ABS,
+        EX_IND
+    } ctrl_state_t;
 
     // Implicit Instructions 
     parameter logic [`BYTE-1:0] BREAK = 8'h00;
@@ -72,11 +86,11 @@ package cpu_6502_ISA_pkg;
     // ZPG      : Zero page
     // IMM      : Immediate
     // ABS      : Absolute
-    parameter logic [2:0] G1_IND1_ZPG_X = 3'b000;
+    parameter logic [2:0] G1_IND1_X     = 3'b000;
     parameter logic [2:0] G1_ZPG        = 3'b001;
     parameter logic [2:0] G1_IMM        = 3'b010;
     parameter logic [2:0] G1_ABS        = 3'b011;
-    parameter logic [2:0] G1_IND2_ZPG_Y = 3'b100;
+    parameter logic [2:0] G1_IND2_Y     = 3'b100;
     parameter logic [2:0] G1_ZPG_X      = 3'b101;
     parameter logic [2:0] G1_ABS_Y      = 3'b110;
     parameter logic [2:0] G1_ABS_X      = 3'b111;

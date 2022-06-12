@@ -29,14 +29,12 @@ module tb();
     logic [(2*`BYTE)-1:0] data_output; 
     logic [`BYTE-1:0] instr_output;
 
-    fetch_state_t state;
-
     pc_t #(3) pc
     (
         .clk_i (clk),
         .rstn_i (~rst),
         .taken_branch_i (1'b0),
-        .new_pc_i (8'h00),
+        .new_pc_i (16'h00),
         .pc_o (instr_addr)
     );
 
@@ -56,11 +54,7 @@ module tb();
 
         // Instruction and data to datapath
         .data_o (data_output),
-        .instr_o (instr_output),
-
-        // State in case it needs to be used
-        // by control 
-        .state_o (state)
+        .instr_o (instr_output)
     );
 
     mem_t memory

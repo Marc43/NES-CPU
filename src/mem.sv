@@ -26,7 +26,9 @@ module mem_t
         // No reset
         if (rstn_i) begin
             // Read 3 bytes
-            data = memory_array[addr_i];
+            data = {memory_array[addr_i+2], 
+                    memory_array[addr_i+1], 
+                    memory_array[addr_i+0]};
         end
     end
 
