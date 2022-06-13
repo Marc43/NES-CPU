@@ -10,9 +10,9 @@ module mem_t
     output logic [(`BYTE*3)-1:0] data_o
 );
 
-    logic [`BYTE-1:0] memory_array [(2**MEM_ADDR_SIZE)-1];    
+    logic [`BYTE-1:0] memory_array [(2**MEM_ADDR_SIZE)-1];
 
-    always_ff @(posedge clk_i) begin
+    always_ff @(posedge clk_i, negedge rstn_i) begin
         // No reset
         if (rstn_i) begin
             // Write a byte
@@ -26,8 +26,8 @@ module mem_t
         // No reset
         if (rstn_i) begin
             // Read 3 bytes
-            data = {memory_array[addr_i+2], 
-                    memory_array[addr_i+1], 
+            data = {memory_array[addr_i+2],
+                    memory_array[addr_i+1],
                     memory_array[addr_i+0]};
         end
     end

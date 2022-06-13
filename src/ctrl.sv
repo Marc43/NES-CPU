@@ -15,10 +15,11 @@ module ctrl_t
     output ctrl_mux_B_t ctrl_mux_B_o,
     output ctrl_mux_dec_ctrl_t ctrl_ctrl_mux_AB_o,
 
-    output ctrl_mux_dec_ctrl_t ctrl_mux_RF_wenable_o,
+    output ctrl_mux_dec_ctrl_t ctrl_mux_RF_we_o,
+    output logic ctrl_we_o,
 
     output ctrl_mux_dec_ctrl_t ctrl_mux_ALU_o,
-    output ALU_op_t ALU_op_o
+    output alu_op_t alu_op_o
 
 );
 
@@ -28,7 +29,7 @@ module ctrl_t
     logic needs_fop_ongoing;
     ctrl_mux_dec_ctrl_t global_mux_dec_ctrl_ctrl;
 
-    always_ff @(posedge clk_i) begin
+    always_ff @(posedge clk_i, negedge rstn_i) begin
         if (!rstn_i) begin
             state <= FETCH;
         end
@@ -78,7 +79,7 @@ module ctrl_t
         if (!rstn_i) begin
             ctrl_mux_A_o = RES_FROM_ALU_SRC;
             ctrl_mux_B_o = ZERO_SRC;
-            ALU_op_o = ALU_ADD;
+            alu_op_o = ALU_ADD;
         end
         else begin
             //
@@ -96,22 +97,22 @@ module ctrl_t
                 if ((addressing_mode_i == ABSOLUTE) || (addressing_mode_i == ABSOLUTE_X) || (addressing_mode_i == ABSOLUTE_Y) begin
                     ctrl_mux_A_o = IMMEDIATE_SRC;
                     ctrl_mux_B_o = ZERO_SRC;
-                    ALU_op_o = ALU_BYPASS_A;
+                    alu_op_o = ALU_BYPASS_A;
                 end
                 else if ((addressing_mode_i == ZERO_PAGE)) begin
                     ctrl_mux_A_o = IMMEDIATE_SRC;
                     ctrl_mux_B_o = ZERO_SRC;
-                    ALU_op_o = ALU_BYPASS_A;
+                    alu_op_o = ALU_BYPASS_A;
                 end
                 else if ((addressing_mode_i == ZERO_PAGE_X) || (addressing_mode_i == ZERO_PAGE_Y)) begin
                     ctrl_mux_A_o = IMMEDIATE_SRC;
                     ctrl_mux_B_o = REGISTER_SRC;
-                    ALU_op_o = ALU_ADD_ZEROPAGE;
+                    alu_op_o = ALU_ADD_ZEROPAGE;
                 end
                 else if ((addressing_mode_i == INDIRECT_X) || (addressing_mode_i == INDIRECT_Y)) begin
                     ctrl_mux_A_o = IMMEDIATE_SRC;
                     ctrl_mux_B_o = REGISTER_SRC;
-                    ALU_op_o = ALU_ADD;
+                    alu_op_o = ALU_ADD;
                 end
             end
             // TODO If you prove that this does work, we can just
@@ -120,13 +121,13 @@ module ctrl_t
                 if ((addressing_mode_i == INDIRECT_X) || (addressing_mode_i == INDIRECT_Y)) begin
                     ctrl_mux_A_o = IMMEDIATE_SRC;
                     ctrl_mux_B_o = ZERO_SRC;
-                    ALU_op_o = ALU_BYPASS_A;
+                    alu_op_o = ALU_BYPASS_A;
                 end
             end
             else begin
                 ctrl_mux_A_o = IMMEDIATE_SRC;
                 ctrl_mux_B_o = ZERO_SRC;
-                ALU_op_o = ALU_BYPASS_B;
+                alu_op_o = ALU_BYPASS_B;
             end
         end
     end
@@ -143,7 +144,8 @@ module ctrl_t
 
     assign ctrl_mux_mem_we_o = global_mux_dec_ctrl_ctrl;
     assign ctrl_ctrl_mux_AB_o = global_mux_dec_ctrl_ctrl;
-    assign ctrl_mux_RF_wenable_o = global_mux_dec_ctrl_ctrl;
+    assign ctrl_mux_RF_we_o = global_mux_dec_ctrl_ctrl;
+    assign ctrl_we_o = 1'b0;
     assign ctrl_mux_ALU_o = global_mux_dec_ctrl_ctrl;
 
 endmodule : ctrl_t

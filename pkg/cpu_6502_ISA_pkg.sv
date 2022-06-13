@@ -50,12 +50,6 @@ package cpu_6502_ISA_pkg;
 
     enum logic
     {
-        DECODER_WE,
-        CTRL_WE
-    } ctrl_mux_we_addr_t;
-
-    enum logic
-    {
         IMMEDIATE_SRC,
         RES_FROM_ALU_SRC
     } ctrl_mux_A_t;
@@ -79,11 +73,12 @@ package cpu_6502_ISA_pkg;
 
     enum logic [1:0]
     {
+        ALU_NOP,
         ALU_BYPASS_A,
         ALU_BYPASS_B,
         ALU_ADD,
         ALU_ADD_ZEROPAGE
-    } ALU_op_t;
+    } alu_op_t;
 
     // Implicit Instructions
     parameter logic [`BYTE-1:0] BREAK = 8'h00;
