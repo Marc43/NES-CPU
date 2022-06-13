@@ -39,7 +39,46 @@ package cpu_6502_ISA_pkg;
         EX_IND
     } ctrl_state_t;
 
-    // Implicit Instructions 
+    // Choose between:
+    //  - PC
+    //  - ALU computed address
+    enum logic
+    {
+        PC_FETCH_ADDRESS,
+        ALU_ADDRESS
+    } ctrl_mux_mem_addr_t;
+
+    enum logic
+    {
+        DECODER_WE,
+        CTRL_WE
+    } ctrl_mux_we_addr_t;
+
+    enum logic
+    {
+        IMMEDIATE_SRC,
+        RES_FROM_ALU_SRC
+    } ctrl_mux_A_t;
+
+    enum logic
+    {
+        REGISTER_SRC,
+        ZERO_SRC
+    } ctrl_mux_B_t;
+
+    // As I use the "EX" to load the data
+    // needed by the addressing modes, the
+    // CTRL needs to be able to override
+    // the control in muxes A and B that
+    // choose the source operands of the ALU
+    enum logic
+    {
+        FROM_DECODER,
+        FROM_CTRL
+    } ctrl_ctrl_mux_AB_t;
+
+
+    // Implicit Instructions
     parameter logic [`BYTE-1:0] BREAK = 8'h00;
     parameter logic [`BYTE-1:0] RTI = 8'h40;
     parameter logic [`BYTE-1:0] RTS = 8'h60;
@@ -94,7 +133,7 @@ package cpu_6502_ISA_pkg;
     parameter logic [2:0] G1_ZPG_X      = 3'b101;
     parameter logic [2:0] G1_ABS_Y      = 3'b110;
     parameter logic [2:0] G1_ABS_X      = 3'b111;
-    
+
     // Group Two Instructions
     parameter logic [2:0] ASL = 3'b000;
     parameter logic [2:0] ROL = 3'b001;
