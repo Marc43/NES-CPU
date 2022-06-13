@@ -6,11 +6,7 @@ module fetch_t
     // From PC
     input logic [MEM_ADDR_SIZE-1:0] instr_addr_i,
 
-    // From RF
-    //input logic [REG_SIZE-1:0] X_i,
-    //input logic [REG_SIZE-1:0] Y_i,
-    
-    // To MEM (TODO ifdef SIMULATION) 
+    // To MEM (TODO ifdef SIMULATION)
     output logic [MEM_ADDR_SIZE-1:0] mem_addr_o,
     // From MEM
     input logic [(3*`BYTE)-1:0] data_i,
@@ -26,5 +22,5 @@ module fetch_t
     assign mem_addr_o = instr_addr_i;
     assign instr_o = data_i[`BYTE-1:0];
     assign data_o = data_i[(3*`BYTE)-1:`BYTE];
-    
+
 endmodule : fetch_t

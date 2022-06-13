@@ -75,8 +75,15 @@ package cpu_6502_ISA_pkg;
     {
         FROM_DECODER,
         FROM_CTRL
-    } ctrl_ctrl_mux_AB_t;
+    } ctrl_mux_dec_ctrl_t;
 
+    enum logic [1:0]
+    {
+        ALU_BYPASS_A,
+        ALU_BYPASS_B,
+        ALU_ADD,
+        ALU_ADD_ZEROPAGE
+    } ALU_op_t;
 
     // Implicit Instructions
     parameter logic [`BYTE-1:0] BREAK = 8'h00;
