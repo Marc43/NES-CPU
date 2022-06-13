@@ -1,12 +1,14 @@
 module rf_t
 (
-    logic clk_i,
-    logic rstn_i,
-    reg_id_t reg_addr_i,
-    logic reg_we_i,
-    logic [(2*`BYTE)-1:0] reg_data_i,
-    logic [(2*`BYTE)-1:0] reg_read_data_o
+    input logic clk_i,
+    input logic rstn_i,
+    input reg_id_t reg_addr_i,
+    input logic reg_we_i,
+    input logic [(2*`BYTE)-1:0] reg_data_i,
+    output logic [(2*`BYTE)-1:0] reg_read_data_o
 );
+
+    logic [(2*`BYTE)-1:0] reg_read_data;
 
     logic [`BYTE-1:0] regs_data [5]; // Add a parameter? Rather than FiVe?
 
@@ -18,11 +20,13 @@ module rf_t
 
     always_comb begin
         if (!rstn_i) begin
-            reg_read_data_o = 16'h0000;
+            reg_read_data = 16'h0000;
         end
         else begin
-            reg_read_data_o = regs_data[reg_addr_i];
+            reg_read_data = regs_data[reg_addr_i];
         end
     end
+
+    assign reg_read_data_o = reg_read_data;
 
 endmodule : rf_t

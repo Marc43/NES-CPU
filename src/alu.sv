@@ -1,3 +1,6 @@
+import nes_cpu_pkg::*;
+import cpu_6502_ISA_pkg::*;
+
 module alu_t
 (
     input logic clk_i,
@@ -5,10 +8,11 @@ module alu_t
 
     input logic [(2*`BYTE)-1:0] op_A_i,
     input logic [(2*`BYTE)-1:0] op_B_i,
-    input logic alu_op_t alu_op_i,
+    input alu_op_t alu_op_i,
 
     output logic [(2*`BYTE)-1:0] res_o
 );
+
 
     logic [(2*`BYTE)-1:0] res;
 

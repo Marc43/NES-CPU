@@ -4,16 +4,18 @@ module ctrl_t
     input logic rstn_i,
 
     input addressing_mode_t addressing_mode_i,
+    input logic mem_valid_i,
 
     // Do not modify PC in intermediate states
     output logic block_pc_o,
 
     output ctrl_mux_mem_addr_t ctrl_mux_mem_addr_o,
-    output ctrl_mux_mem_we_t ctrl_mux_mem_we_o,
+    output ctrl_mux_dec_ctrl_t ctrl_mux_mem_we_o,
 
     output ctrl_mux_A_t ctrl_mux_A_o,
     output ctrl_mux_B_t ctrl_mux_B_o,
     output ctrl_mux_dec_ctrl_t ctrl_ctrl_mux_AB_o,
+    output reg_id_t ctrl_src_reg_addr,
 
     output ctrl_mux_dec_ctrl_t ctrl_mux_RF_we_o,
     output logic ctrl_we_o,
@@ -43,7 +45,7 @@ module ctrl_t
             next_state = FETCH;
         end
         else begin
-            case (state) begin
+            case (state) 
                 FETCH: begin
                     next_state = mem_valid_i ? EX_FOP1 : state;
                 end
@@ -71,7 +73,7 @@ module ctrl_t
                 end
                 EX_IND:     next_state = FETCH;
                 EX_ABS:     next_state = FETCH;
-            end
+            endcase
         end
     end
 
@@ -94,7 +96,7 @@ module ctrl_t
             //      SRC_REG OP mem[mem[SRC_REG]+Y] -> DST_REG
             //
             if (state == EX_FOP1) begin
-                if ((addressing_mode_i == ABSOLUTE) || (addressing_mode_i == ABSOLUTE_X) || (addressing_mode_i == ABSOLUTE_Y) begin
+                if ((addressing_mode_i == ABSOLUTE) || (addressing_mode_i == ABSOLUTE_X) || (addressing_mode_i == ABSOLUTE_Y)) begin
                     ctrl_mux_A_o = IMMEDIATE_SRC;
                     ctrl_mux_B_o = ZERO_SRC;
                     alu_op_o = ALU_BYPASS_A;
@@ -133,7 +135,7 @@ module ctrl_t
     end
 
     assign needs_fop_ongoing =  (addressing_mode_i == ABSOLUTE)     || (addressing_mode_i == ABSOLUTE_X)    || (addressing_mode_i == ABSOLUTE_Y)    ||
-                                (addressing_mode_i == INDIRECT_X)   || (addressing_mode_i == INDIRECT_Y     || (addressing_mode_i == ZERO_PAGE)     ||
+                                (addressing_mode_i == INDIRECT_X)   || (addressing_mode_i == INDIRECT_Y)    || (addressing_mode_i == ZERO_PAGE)     ||
                                 (addressing_mode_i == ZERO_PAGE_X)  || (addressing_mode_i == ZERO_PAGE_Y);
 
     assign global_mux_dec_ctrl_ctrl = (((state == EX_FOP1) || (state == FOP2)) && (needs_fop_ongoing)) ? FROM_CTRL : FROM_DECODER;
@@ -144,6 +146,7 @@ module ctrl_t
 
     assign ctrl_mux_mem_we_o = global_mux_dec_ctrl_ctrl;
     assign ctrl_ctrl_mux_AB_o = global_mux_dec_ctrl_ctrl;
+    assign ctrl_src_reg_addr = ((addressing_mode_i == INDIRECT_X) || (addressing_mode_i == ABSOLUTE_X) || (addressing_mode_i == ZERO_PAGE_X)) ? X_REG: Y_REG;
     assign ctrl_mux_RF_we_o = global_mux_dec_ctrl_ctrl;
     assign ctrl_we_o = 1'b0;
     assign ctrl_mux_ALU_o = global_mux_dec_ctrl_ctrl;

@@ -5,6 +5,8 @@ module cpu_t
 
     input [(3*`BYTE)-1:0] mem_data_i,
 
+    output [MEM_ADDR_SIZE-1:0] mem_addr_o
+
 );
 
     // mux PC
@@ -13,8 +15,8 @@ module cpu_t
     // PC
     logic taken_branch;
     logic [MEM_ADDR_SIZE-1:0] new_pc, pc_q;
-    pc_t pc
-    #(INCREMENT=3)
+    logic cpu_ctrl_block_pc; // CTRL -> PC
+    pc_t #(3) pc
     (
         .clk_i(clk_i),
         .rstn_i(rstn_i),
@@ -38,14 +40,13 @@ module cpu_t
 
         .instr_addr_i(pc_q),
 
-        .mem_addr_o(mem_addr),
+        .mem_addr_o(fe_mem_addr),
 
         .data_i(mem_data_i),
 
         // To decode
-        .data_o(data),
-        .instr_o(instr),
-
+        .data_o(fe_data),
+        .instr_o(fe_instr)
     );
 
     // decode
@@ -68,7 +69,7 @@ module cpu_t
         .dst_reg_addr_o(dec_dst_reg_addr),
         .we_o(dec_we),
 
-        .addressing_mode_o(dec_addr_mode)
+        .addressing_mode_o(dec_addressing_mode),
 
         .ctrl_mux_A(dec_ctrl_mux_A),
         .ctrl_mux_B(dec_ctrl_mux_B),
@@ -88,27 +89,19 @@ module cpu_t
      *
      */
 
-    // mux_A
-    logic [(2*`BYTE)-1:0] out_data_mux_A;
-    always_comb begin : mux_A
-        case (ctrl_mux_A)
-            IMMEDIATE_SRC: out_data_mux_A = imm;
-            RES_FROM_ALU_SRC: out_data_mux_A = alu_res_q;
-            default: out_data_mux_A = 16'h0000;
-        endcase
-    end
+    // From CPU CTRL
+    ctrl_mux_dec_ctrl_t ctrl_mux_dec_cpu_ctrl;
+    ctrl_mux_A_t cpu_ctrl_mux_A;
+    ctrl_mux_B_t cpu_ctrl_mux_B;
+    ctrl_mux_dec_ctrl_t cpu_ctrl_mux_ALU;
+    alu_op_t cpu_ctrl_alu_op;
 
-    // mux_B
-    logic [(2*`BYTE)-1:0] out_data_mux_B;
-    always_comb begin : mux_B
-        case (ctrl_mux_B)
-            REGISTER_SRC: out_data_mux_B = reg_read_data;
-            ZERO_SRC: out_data_mux_B = 16'h0000;
-            default: out_data_mux_B = 16'h0000;
-        endcase
-    end
+    // From RF
+    logic [(2*`BYTE)-1:0] reg_read_data;
 
-    // Control of muxes A and B, the value is in fact given by another mux
+    // Register containing result of ALU through a FF
+    logic [(2*`BYTE)-1:0] alu_res_q;
+
     ctrl_mux_A_t ctrl_mux_A;
     ctrl_mux_B_t ctrl_mux_B;
     always_comb begin : mux_ctrl_mux_A
@@ -126,6 +119,26 @@ module cpu_t
                 ctrl_mux_A = dec_ctrl_mux_A;
                 ctrl_mux_B = dec_ctrl_mux_B;
             end
+        endcase
+    end
+
+    // mux_A
+    logic [(2*`BYTE)-1:0] out_data_mux_A;
+    always_comb begin : mux_A
+        case (ctrl_mux_A)
+            IMMEDIATE_SRC: out_data_mux_A = dec_imm;
+            RES_FROM_ALU_SRC: out_data_mux_A = alu_res_q;
+            default: out_data_mux_A = 16'h0000;
+        endcase
+    end
+
+    // mux_B
+    logic [(2*`BYTE)-1:0] out_data_mux_B;
+    always_comb begin : mux_B
+        case (ctrl_mux_B)
+            REGISTER_SRC: out_data_mux_B = reg_read_data;
+            ZERO_SRC: out_data_mux_B = 16'h0000;
+            default: out_data_mux_B = 16'h0000;
         endcase
     end
 
@@ -152,7 +165,6 @@ module cpu_t
     );
 
     // This is used to feed the alu
-    logic [(2*`BYTE)-1:0] alu_res_q;
     always_ff @(posedge clk_i, negedge rstn_i) begin
         if (!rstn_i) begin
             alu_res_q <= 16'h0000;
@@ -163,17 +175,12 @@ module cpu_t
     end
 
     // control
-    ctrl_mux_dec_ctrl_t ctrl_mux_dec_cpu_ctrl;
-    logic cpu_ctrl_block_pc;
     ctrl_mux_mem_addr_t cpu_ctrl_mux_mem_addr;
-    ctrl_mux_mem_we_t cpu_ctrl_mux_mem_we;
-    ctrl_mux_A_t cpu_ctrl_mux_A;
-    ctrl_mux_B_t cpu_ctrl_mux_B;
+    ctrl_mux_dec_ctrl_t cpu_ctrl_mux_mem_we;
     ctrl_mux_dec_ctrl_t cpu_ctrl_ctrl_mux_AB;
+    reg_id_t cpu_ctrl_src_reg_addr;
     ctrl_mux_dec_ctrl_t cpu_ctrl_mux_RF_wenable;
-    logic cpu_ctrl_wenable;
-    ctrl_mux_dec_ctrl_t cpu_ctrl_mux_ALU;
-    alu_op_t cpu_ctrl_alu;
+    logic cpu_ctrl_we;
 
     ctrl_t cpu_ctrl
     (
@@ -181,6 +188,7 @@ module cpu_t
         .rstn_i(rstn_i),
 
         .addressing_mode_i(dec_addressing_mode),
+        .mem_valid_i (1'b1),  // To be reworked whenever I have real memory TODO
 
         .block_pc_o(cpu_ctrl_block_pc),
 
@@ -188,14 +196,15 @@ module cpu_t
         .ctrl_mux_mem_we_o(cpu_ctrl_mux_mem_we),
 
         .ctrl_mux_A_o(cpu_ctrl_mux_A),
-        .ctrl_mux_B_o(cpu_ctrl_mux_A),
+        .ctrl_mux_B_o(cpu_ctrl_mux_B),
         .ctrl_ctrl_mux_AB_o(cpu_ctrl_ctrl_mux_AB),
+        .ctrl_src_reg_addr(cpu_ctrl_src_reg_addr),
 
-        .ctrl_mux_RF_wenable_o(cpu_ctrl_mux_RF_wenable),
-        .ctrl_wenable_o(ctrl_wenable),
+        .ctrl_mux_RF_we_o(cpu_ctrl_mux_RF_wenable),
+        .ctrl_we_o(cpu_ctrl_we),
 
         .ctrl_mux_ALU_o(cpu_ctrl_mux_ALU),
-        .alu_op_o(cpu_ctrl_alu)
+        .alu_op_o(cpu_ctrl_alu_op)
     );
 
     // RF DEC/CTRL mux
@@ -204,6 +213,7 @@ module cpu_t
     always_comb begin : rf_dec_ctrl_mux
         if (!rstn_i) begin
             out_we_mux = 1'b0;
+            out_reg_id_mux = dec_src_reg_addr;
         end
         else begin
             case (cpu_ctrl_mux_RF_wenable)
@@ -215,13 +225,16 @@ module cpu_t
                     out_we_mux = cpu_ctrl_we;
                     out_reg_id_mux = cpu_ctrl_src_reg_addr;
                 end
-                default: out_we_mux = 1'b0;
+                default:begin
+                    out_we_mux = 1'b0;
+                    out_reg_id_mux = dec_src_reg_addr;
+                end
             endcase
         end
     end
 
     // register file
-    logic [(2*`BYTE)-1:0] reg_read_data;
+    logic [(2*`BYTE)-1:0] reg_data = 16'h0000;
     rf_t rf
     (
         .clk_i(clk_i),
@@ -230,9 +243,11 @@ module cpu_t
         .reg_addr_i(out_reg_id_mux),
 
         .reg_we_i(out_we_mux),
-        .reg_data_i(16'h0000), // TODO Whenever I generate data from EX, put it here
+        .reg_data_i(reg_data), // TODO Whenever I generate data from EX, put it here
 
         .reg_read_data_o(reg_read_data)
     );
+
+    assign mem_addr_o = fe_mem_addr;
 
 endmodule : cpu_t

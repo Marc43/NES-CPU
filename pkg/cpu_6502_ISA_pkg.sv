@@ -4,7 +4,7 @@ package cpu_6502_ISA_pkg;
 
     // https://www.middle-engine.com/blog/posts/2020/06/23/programming-the-nes-the-6502-in-detail
     // For addressing modes can be quite useful
-    enum logic [2:0]
+    typedef enum logic [3:0]
     {
         IMPLIED,
         ACCUMULATOR,
@@ -21,7 +21,7 @@ package cpu_6502_ISA_pkg;
         RELATIVE
     } addressing_mode_t;
 
-    enum logic [2:0]
+    typedef enum logic [2:0]
     {
         A_REG,
         X_REG,
@@ -30,7 +30,7 @@ package cpu_6502_ISA_pkg;
         P_REG
     } reg_id_t;
 
-    enum logic [2:0]
+    typedef enum logic [2:0]
     {
         FETCH,
         EX_FOP1, // EXECUTE or Fetch Operand 1 (IND/ABS)
@@ -42,19 +42,19 @@ package cpu_6502_ISA_pkg;
     // Choose between:
     //  - PC
     //  - ALU computed address
-    enum logic
+    typedef enum logic
     {
         PC_FETCH_ADDRESS,
         ALU_ADDRESS
     } ctrl_mux_mem_addr_t;
 
-    enum logic
+    typedef enum logic
     {
         IMMEDIATE_SRC,
         RES_FROM_ALU_SRC
     } ctrl_mux_A_t;
 
-    enum logic
+    typedef enum logic
     {
         REGISTER_SRC,
         ZERO_SRC
@@ -65,13 +65,13 @@ package cpu_6502_ISA_pkg;
     // CTRL needs to be able to override
     // the control in muxes A and B that
     // choose the source operands of the ALU
-    enum logic
+    typedef enum logic
     {
         FROM_DECODER,
         FROM_CTRL
     } ctrl_mux_dec_ctrl_t;
 
-    enum logic [1:0]
+    typedef enum logic [2:0]
     {
         ALU_NOP,
         ALU_BYPASS_A,
