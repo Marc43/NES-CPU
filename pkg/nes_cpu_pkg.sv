@@ -1,7 +1,18 @@
-package nes_cpu;
+package nes_cpu_pkg;
    
-    int MEM_ADDR_SIZE = 16;         // 16 bits to index memory
-    int BOOT_ADDR = 0;              // TODO Not really  
-    int INSTR_SIZE_IN_BYTES = 16;   // So far 
+    `include "defines.svh"
 
-endpackage : nes_cpu
+    import cpu_6502_ISA_pkg::*;
+
+    parameter int MEM_ADDR_SIZE = 16; // 16 bits to index memory
+    parameter int BOOT_ADDR = 0;      // TODO Not really  
+    parameter int MAX_INSTR_SIZE = 3; // 3 bytes
+    parameter int REG_SIZE = `BYTE;
+
+    typedef enum logic 
+    {
+        FETCH_OPCODE,
+        FETCH_VALID
+    } fetch_state_t;
+
+endpackage : nes_cpu_pkg
