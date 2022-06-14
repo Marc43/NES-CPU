@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb.wdb" id="1">
+         <top_modules>
+            <top_module name="cpu_6502_ISA_pkg" />
+            <top_module name="nes_cpu_pkg" />
+            <top_module name="tb" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="442.001 ns"></ZoomEndTime>
+      <Cursor1Time time="115.000 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="276"></NameColumnWidth>
+      <ValueColumnWidth column_width="116"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="95" />
+   <wvobject type="logic" fp_name="/tb/cpu/pc/clk_i">
+      <obj_property name="ElementShortName">clk_i</obj_property>
+      <obj_property name="ObjectShortName">clk_i</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/cpu/pc/rstn_i">
+      <obj_property name="ElementShortName">rstn_i</obj_property>
+      <obj_property name="ObjectShortName">rstn_i</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider8" type="divider">
+      <obj_property name="label">FETCH</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/cpu/pc/block_pc_i">
+      <obj_property name="ElementShortName">block_pc_i</obj_property>
+      <obj_property name="ObjectShortName">block_pc_i</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/cpu/pc/taken_branch_i">
+      <obj_property name="ElementShortName">taken_branch_i</obj_property>
+      <obj_property name="ObjectShortName">taken_branch_i</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/pc/new_pc_i">
+      <obj_property name="ElementShortName">new_pc_i[15:0]</obj_property>
+      <obj_property name="ObjectShortName">new_pc_i[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/pc/pc_o">
+      <obj_property name="ElementShortName">pc_o[15:0]</obj_property>
+      <obj_property name="ObjectShortName">pc_o[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/pc/INCREMENT">
+      <obj_property name="ElementShortName">INCREMENT[31:0]</obj_property>
+      <obj_property name="ObjectShortName">INCREMENT[31:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/fetch/instr_addr_i">
+      <obj_property name="ElementShortName">instr_addr_i[15:0]</obj_property>
+      <obj_property name="ObjectShortName">instr_addr_i[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/fetch/mem_addr_o">
+      <obj_property name="ElementShortName">mem_addr_o[15:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_addr_o[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/fetch/data_i">
+      <obj_property name="ElementShortName">data_i[23:0]</obj_property>
+      <obj_property name="ObjectShortName">data_i[23:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/fetch/data_o">
+      <obj_property name="ElementShortName">data_o[15:0]</obj_property>
+      <obj_property name="ObjectShortName">data_o[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/fetch/instr_o">
+      <obj_property name="ElementShortName">instr_o[7:0]</obj_property>
+      <obj_property name="ObjectShortName">instr_o[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider9" type="divider">
+      <obj_property name="label">DECODER</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/decoder/opcode_i">
+      <obj_property name="ElementShortName">opcode_i[7:0]</obj_property>
+      <obj_property name="ObjectShortName">opcode_i[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/decoder/data_i">
+      <obj_property name="ElementShortName">data_i[15:0]</obj_property>
+      <obj_property name="ObjectShortName">data_i[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/decoder/dst_reg_addr_o">
+      <obj_property name="ElementShortName">dst_reg_addr_o[2:0]</obj_property>
+      <obj_property name="ObjectShortName">dst_reg_addr_o[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/decoder/src_reg_addr_o">
+      <obj_property name="ElementShortName">src_reg_addr_o[2:0]</obj_property>
+      <obj_property name="ObjectShortName">src_reg_addr_o[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/decoder/addressing_mode_o">
+      <obj_property name="ElementShortName">addressing_mode_o[3:0]</obj_property>
+      <obj_property name="ObjectShortName">addressing_mode_o[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/decoder/ctrl_mux_A">
+      <obj_property name="ElementShortName">ctrl_mux_A[1:0]</obj_property>
+      <obj_property name="ObjectShortName">ctrl_mux_A[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/tb/cpu/decoder/ctrl_mux_B">
+      <obj_property name="ElementShortName">ctrl_mux_B</obj_property>
+      <obj_property name="ObjectShortName">ctrl_mux_B</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/decoder/imm_o">
+      <obj_property name="ElementShortName">imm_o[15:0]</obj_property>
+      <obj_property name="ObjectShortName">imm_o[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/decoder/alu_op_o">
+      <obj_property name="ElementShortName">alu_op_o[3:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_op_o[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/decoder/addressing_mode">
+      <obj_property name="ElementShortName">addressing_mode[3:0]</obj_property>
+      <obj_property name="ObjectShortName">addressing_mode[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider35" type="divider">
+      <obj_property name="label">EX</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/ex/alu_op_i">
+      <obj_property name="ElementShortName">alu_op_i[3:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_op_i[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/ex/alu_res_o">
+      <obj_property name="ElementShortName">alu_res_o[15:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_res_o[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider40" type="divider">
+      <obj_property name="label">CPU CTRL</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/cpu_ctrl/addressing_mode_i">
+      <obj_property name="ElementShortName">addressing_mode_i[3:0]</obj_property>
+      <obj_property name="ObjectShortName">addressing_mode_i[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/cpu/cpu_ctrl/mem_valid_i">
+      <obj_property name="ElementShortName">mem_valid_i</obj_property>
+      <obj_property name="ObjectShortName">mem_valid_i</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/cpu/cpu_ctrl/block_pc_o">
+      <obj_property name="ElementShortName">block_pc_o</obj_property>
+      <obj_property name="ObjectShortName">block_pc_o</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/tb/cpu/cpu_ctrl/ctrl_mux_mem_addr_o">
+      <obj_property name="ElementShortName">ctrl_mux_mem_addr_o</obj_property>
+      <obj_property name="ObjectShortName">ctrl_mux_mem_addr_o</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/tb/cpu/cpu_ctrl/ctrl_mux_mem_we_o">
+      <obj_property name="ElementShortName">ctrl_mux_mem_we_o</obj_property>
+      <obj_property name="ObjectShortName">ctrl_mux_mem_we_o</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/cpu_ctrl/ctrl_mux_A_o">
+      <obj_property name="ElementShortName">ctrl_mux_A_o[1:0]</obj_property>
+      <obj_property name="ObjectShortName">ctrl_mux_A_o[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/tb/cpu/cpu_ctrl/ctrl_mux_B_o">
+      <obj_property name="ElementShortName">ctrl_mux_B_o</obj_property>
+      <obj_property name="ObjectShortName">ctrl_mux_B_o</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/tb/cpu/cpu_ctrl/ctrl_ctrl_mux_AB_o">
+      <obj_property name="ElementShortName">ctrl_ctrl_mux_AB_o</obj_property>
+      <obj_property name="ObjectShortName">ctrl_ctrl_mux_AB_o</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/cpu_ctrl/ctrl_src_reg_addr">
+      <obj_property name="ElementShortName">ctrl_src_reg_addr[2:0]</obj_property>
+      <obj_property name="ObjectShortName">ctrl_src_reg_addr[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/tb/cpu/cpu_ctrl/ctrl_mux_RF_we_o">
+      <obj_property name="ElementShortName">ctrl_mux_RF_we_o</obj_property>
+      <obj_property name="ObjectShortName">ctrl_mux_RF_we_o</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/cpu/cpu_ctrl/ctrl_we_o">
+      <obj_property name="ElementShortName">ctrl_we_o</obj_property>
+      <obj_property name="ObjectShortName">ctrl_we_o</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/tb/cpu/cpu_ctrl/ctrl_mux_ALU_o">
+      <obj_property name="ElementShortName">ctrl_mux_ALU_o</obj_property>
+      <obj_property name="ObjectShortName">ctrl_mux_ALU_o</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/cpu_ctrl/alu_op_o">
+      <obj_property name="ElementShortName">alu_op_o[3:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_op_o[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/cpu_ctrl/state">
+      <obj_property name="ElementShortName">state[2:0]</obj_property>
+      <obj_property name="ObjectShortName">state[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/cpu_ctrl/next_state">
+      <obj_property name="ElementShortName">next_state[2:0]</obj_property>
+      <obj_property name="ObjectShortName">next_state[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/cpu/cpu_ctrl/needs_fop_ongoing">
+      <obj_property name="ElementShortName">needs_fop_ongoing</obj_property>
+      <obj_property name="ObjectShortName">needs_fop_ongoing</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/tb/cpu/cpu_ctrl/global_mux_dec_ctrl_ctrl">
+      <obj_property name="ElementShortName">global_mux_dec_ctrl_ctrl</obj_property>
+      <obj_property name="ObjectShortName">global_mux_dec_ctrl_ctrl</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider61" type="divider">
+      <obj_property name="label">RF</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/rf/reg_addr_i">
+      <obj_property name="ElementShortName">reg_addr_i[2:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_addr_i[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/cpu/rf/reg_we_i">
+      <obj_property name="ElementShortName">reg_we_i</obj_property>
+      <obj_property name="ObjectShortName">reg_we_i</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/rf/reg_data_i">
+      <obj_property name="ElementShortName">reg_data_i[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_data_i[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/rf/reg_read_data_o">
+      <obj_property name="ElementShortName">reg_read_data_o[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_read_data_o[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/rf/reg_read_data">
+      <obj_property name="ElementShortName">reg_read_data[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_read_data[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/rf/regs_data">
+      <obj_property name="ElementShortName">regs_data[0:4][7:0]</obj_property>
+      <obj_property name="ObjectShortName">regs_data[0:4][7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="divider64" type="divider">
+      <obj_property name="label">CPU</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/cpu/clk_i">
+      <obj_property name="ElementShortName">clk_i</obj_property>
+      <obj_property name="ObjectShortName">clk_i</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/cpu/rstn_i">
+      <obj_property name="ElementShortName">rstn_i</obj_property>
+      <obj_property name="ObjectShortName">rstn_i</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/mem_data_i">
+      <obj_property name="ElementShortName">mem_data_i[23:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_data_i[23:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/mem_addr_o">
+      <obj_property name="ElementShortName">mem_addr_o[15:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_addr_o[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/cpu/taken_branch">
+      <obj_property name="ElementShortName">taken_branch</obj_property>
+      <obj_property name="ObjectShortName">taken_branch</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/new_pc">
+      <obj_property name="ElementShortName">new_pc[15:0]</obj_property>
+      <obj_property name="ObjectShortName">new_pc[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/pc_q">
+      <obj_property name="ElementShortName">pc_q[15:0]</obj_property>
+      <obj_property name="ObjectShortName">pc_q[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/cpu/cpu_ctrl_block_pc">
+      <obj_property name="ElementShortName">cpu_ctrl_block_pc</obj_property>
+      <obj_property name="ObjectShortName">cpu_ctrl_block_pc</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/fe_mem_addr">
+      <obj_property name="ElementShortName">fe_mem_addr[15:0]</obj_property>
+      <obj_property name="ObjectShortName">fe_mem_addr[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/fe_data">
+      <obj_property name="ElementShortName">fe_data[15:0]</obj_property>
+      <obj_property name="ObjectShortName">fe_data[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/fe_instr">
+      <obj_property name="ElementShortName">fe_instr[7:0]</obj_property>
+      <obj_property name="ObjectShortName">fe_instr[7:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/dec_dst_reg_addr">
+      <obj_property name="ElementShortName">dec_dst_reg_addr[2:0]</obj_property>
+      <obj_property name="ObjectShortName">dec_dst_reg_addr[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/dec_src_reg_addr">
+      <obj_property name="ElementShortName">dec_src_reg_addr[2:0]</obj_property>
+      <obj_property name="ObjectShortName">dec_src_reg_addr[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/dec_addressing_mode">
+      <obj_property name="ElementShortName">dec_addressing_mode[3:0]</obj_property>
+      <obj_property name="ObjectShortName">dec_addressing_mode[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/cpu/dec_rf_we">
+      <obj_property name="ElementShortName">dec_rf_we</obj_property>
+      <obj_property name="ObjectShortName">dec_rf_we</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/cpu/dec_mem_we">
+      <obj_property name="ElementShortName">dec_mem_we</obj_property>
+      <obj_property name="ObjectShortName">dec_mem_we</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/dec_ctrl_mux_A">
+      <obj_property name="ElementShortName">dec_ctrl_mux_A[1:0]</obj_property>
+      <obj_property name="ObjectShortName">dec_ctrl_mux_A[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/tb/cpu/dec_ctrl_mux_B">
+      <obj_property name="ElementShortName">dec_ctrl_mux_B</obj_property>
+      <obj_property name="ObjectShortName">dec_ctrl_mux_B</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/dec_alu_op">
+      <obj_property name="ElementShortName">dec_alu_op[3:0]</obj_property>
+      <obj_property name="ObjectShortName">dec_alu_op[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/dec_imm">
+      <obj_property name="ElementShortName">dec_imm[15:0]</obj_property>
+      <obj_property name="ObjectShortName">dec_imm[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/tb/cpu/ctrl_mux_dec_cpu_ctrl">
+      <obj_property name="ElementShortName">ctrl_mux_dec_cpu_ctrl</obj_property>
+      <obj_property name="ObjectShortName">ctrl_mux_dec_cpu_ctrl</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/cpu_ctrl_mux_A">
+      <obj_property name="ElementShortName">cpu_ctrl_mux_A[1:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_ctrl_mux_A[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/tb/cpu/cpu_ctrl_mux_B">
+      <obj_property name="ElementShortName">cpu_ctrl_mux_B</obj_property>
+      <obj_property name="ObjectShortName">cpu_ctrl_mux_B</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/tb/cpu/cpu_ctrl_mux_ALU">
+      <obj_property name="ElementShortName">cpu_ctrl_mux_ALU</obj_property>
+      <obj_property name="ObjectShortName">cpu_ctrl_mux_ALU</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/cpu_ctrl_alu_op">
+      <obj_property name="ElementShortName">cpu_ctrl_alu_op[3:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_ctrl_alu_op[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/reg_read_data">
+      <obj_property name="ElementShortName">reg_read_data[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_read_data[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/alu_res_q">
+      <obj_property name="ElementShortName">alu_res_q[15:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_res_q[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/ctrl_mux_A">
+      <obj_property name="ElementShortName">ctrl_mux_A[1:0]</obj_property>
+      <obj_property name="ObjectShortName">ctrl_mux_A[1:0]</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/tb/cpu/ctrl_mux_B">
+      <obj_property name="ElementShortName">ctrl_mux_B</obj_property>
+      <obj_property name="ObjectShortName">ctrl_mux_B</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/out_data_mux_A">
+      <obj_property name="ElementShortName">out_data_mux_A[15:0]</obj_property>
+      <obj_property name="ObjectShortName">out_data_mux_A[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/out_data_mux_B">
+      <obj_property name="ElementShortName">out_data_mux_B[15:0]</obj_property>
+      <obj_property name="ObjectShortName">out_data_mux_B[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/out_alu_op">
+      <obj_property name="ElementShortName">out_alu_op[3:0]</obj_property>
+      <obj_property name="ObjectShortName">out_alu_op[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/alu_res">
+      <obj_property name="ElementShortName">alu_res[15:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_res[15:0]</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/tb/cpu/cpu_ctrl_mux_mem_addr">
+      <obj_property name="ElementShortName">cpu_ctrl_mux_mem_addr</obj_property>
+      <obj_property name="ObjectShortName">cpu_ctrl_mux_mem_addr</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/tb/cpu/cpu_ctrl_mux_mem_we">
+      <obj_property name="ElementShortName">cpu_ctrl_mux_mem_we</obj_property>
+      <obj_property name="ObjectShortName">cpu_ctrl_mux_mem_we</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/tb/cpu/cpu_ctrl_ctrl_mux_AB">
+      <obj_property name="ElementShortName">cpu_ctrl_ctrl_mux_AB</obj_property>
+      <obj_property name="ObjectShortName">cpu_ctrl_ctrl_mux_AB</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/cpu_ctrl_src_reg_addr">
+      <obj_property name="ElementShortName">cpu_ctrl_src_reg_addr[2:0]</obj_property>
+      <obj_property name="ObjectShortName">cpu_ctrl_src_reg_addr[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="other" fp_name="/tb/cpu/cpu_ctrl_mux_RF_wenable">
+      <obj_property name="ElementShortName">cpu_ctrl_mux_RF_wenable</obj_property>
+      <obj_property name="ObjectShortName">cpu_ctrl_mux_RF_wenable</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/cpu/cpu_ctrl_we">
+      <obj_property name="ElementShortName">cpu_ctrl_we</obj_property>
+      <obj_property name="ObjectShortName">cpu_ctrl_we</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb/cpu/out_we_mux">
+      <obj_property name="ElementShortName">out_we_mux</obj_property>
+      <obj_property name="ObjectShortName">out_we_mux</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/out_reg_id_mux">
+      <obj_property name="ElementShortName">out_reg_id_mux[2:0]</obj_property>
+      <obj_property name="ObjectShortName">out_reg_id_mux[2:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb/cpu/reg_data">
+      <obj_property name="ElementShortName">reg_data[15:0]</obj_property>
+      <obj_property name="ObjectShortName">reg_data[15:0]</obj_property>
+   </wvobject>
+</wave_config>
