@@ -52,7 +52,8 @@ module cpu_t
     // decode
     reg_id_t dec_dst_reg_addr, dec_src_reg_addr;
     addressing_mode_t dec_addressing_mode;
-    logic dec_we;
+    logic dec_rf_we;
+    logic dec_mem_we; // TODO Unused by the moment
     ctrl_mux_A_t dec_ctrl_mux_A;
     ctrl_mux_B_t dec_ctrl_mux_B;
     alu_op_t dec_alu_op;
@@ -67,12 +68,13 @@ module cpu_t
 
         .src_reg_addr_o(dec_src_reg_addr),
         .dst_reg_addr_o(dec_dst_reg_addr),
-        .we_o(dec_we),
+        .we_rf_o(dec_rf_we),
+        .we_mem_o(dec_mem_we),
 
         .addressing_mode_o(dec_addressing_mode),
 
-        .ctrl_mux_A(dec_ctrl_mux_A),
-        .ctrl_mux_B(dec_ctrl_mux_B),
+        .ctrl_mux_A_o(dec_ctrl_mux_A),
+        .ctrl_mux_B_o(dec_ctrl_mux_B),
 
         .imm_o(dec_imm),
 
@@ -90,7 +92,7 @@ module cpu_t
      */
 
     // From CPU CTRL
-    ctrl_mux_dec_ctrl_t ctrl_mux_dec_cpu_ctrl;
+    ctrl_mux_dec_ctrl_t cpu_ctrl_ctrl_mux_AB;
     ctrl_mux_A_t cpu_ctrl_mux_A;
     ctrl_mux_B_t cpu_ctrl_mux_B;
     ctrl_mux_dec_ctrl_t cpu_ctrl_mux_ALU;
@@ -106,7 +108,7 @@ module cpu_t
     ctrl_mux_B_t ctrl_mux_B;
     always_comb begin : mux_ctrl_mux_A
         // Control mux that controls mux A and B
-        case (ctrl_mux_dec_cpu_ctrl)
+        case (cpu_ctrl_ctrl_mux_AB)
             FROM_DECODER:begin
                 ctrl_mux_A = dec_ctrl_mux_A;
                 ctrl_mux_B = dec_ctrl_mux_B;
@@ -159,6 +161,9 @@ module cpu_t
         .clk_i(clk_i),
         .rstn_i(rstn_i),
 
+        .op_A_i(out_data_mux_A),
+        .op_B_i(out_data_mux_B),
+
         .alu_op_i(out_alu_op),
         .alu_res_o(alu_res)
 
@@ -177,7 +182,6 @@ module cpu_t
     // control
     ctrl_mux_mem_addr_t cpu_ctrl_mux_mem_addr;
     ctrl_mux_dec_ctrl_t cpu_ctrl_mux_mem_we;
-    ctrl_mux_dec_ctrl_t cpu_ctrl_ctrl_mux_AB;
     reg_id_t cpu_ctrl_src_reg_addr;
     ctrl_mux_dec_ctrl_t cpu_ctrl_mux_RF_wenable;
     logic cpu_ctrl_we;
@@ -218,7 +222,7 @@ module cpu_t
         else begin
             case (cpu_ctrl_mux_RF_wenable)
                 FROM_DECODER:begin
-                    out_we_mux = dec_we;
+                    out_we_mux = dec_rf_we;
                     out_reg_id_mux = dec_src_reg_addr;
                 end
                 FROM_CTRL:begin
@@ -234,7 +238,6 @@ module cpu_t
     end
 
     // register file
-    logic [(2*`BYTE)-1:0] reg_data = 16'h0000;
     rf_t rf
     (
         .clk_i(clk_i),
@@ -243,7 +246,7 @@ module cpu_t
         .reg_addr_i(out_reg_id_mux),
 
         .reg_we_i(out_we_mux),
-        .reg_data_i(reg_data), // TODO Whenever I generate data from EX, put it here
+        .reg_data_i(alu_res), // TODO Mux with memory at some point :)
 
         .reg_read_data_o(reg_read_data)
     );

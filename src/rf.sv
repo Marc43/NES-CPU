@@ -13,6 +13,12 @@ module rf_t
     logic [`BYTE-1:0] regs_data [5]; // Add a parameter? Rather than FiVe?
 
     always_ff @(posedge clk_i, negedge rstn_i) begin
+        if (!rstn_i) begin
+            for (int i = 0; i < 5; i++) begin
+                regs_data[i] <= 16'h0000;
+            end
+        end
+
         if (rstn_i && reg_we_i) begin
             regs_data[reg_addr_i] <= reg_data_i;
         end

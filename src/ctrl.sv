@@ -138,7 +138,7 @@ module ctrl_t
                                 (addressing_mode_i == INDIRECT_X)   || (addressing_mode_i == INDIRECT_Y)    || (addressing_mode_i == ZERO_PAGE)     ||
                                 (addressing_mode_i == ZERO_PAGE_X)  || (addressing_mode_i == ZERO_PAGE_Y);
 
-    assign global_mux_dec_ctrl_ctrl = (((state == EX_FOP1) || (state == FOP2)) && (needs_fop_ongoing)) ? FROM_CTRL : FROM_DECODER;
+    assign global_mux_dec_ctrl_ctrl = ((state == FETCH) || ((state == EX_FOP1) || (state == FOP2)) && (needs_fop_ongoing)) ? FROM_CTRL : FROM_DECODER;
 
     // If not fetching, choose 1, which contains zeroes, else, let the incremented PC (PC_Q = PC_D + 3)
     assign block_pc_o = (state != FETCH) ? 1'b1 : 1'b0;

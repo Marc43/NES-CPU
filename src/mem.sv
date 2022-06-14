@@ -34,7 +34,8 @@ module mem_t
 
     initial begin
         for (int i = 0; i < (2**MEM_ADDR_SIZE)-1; i++) begin
-            memory_array[i] = $random();
+            if ((i%3)==0) memory_array[i] = ORA_IMM;
+            else memory_array[i] = i;
         end
     end
 

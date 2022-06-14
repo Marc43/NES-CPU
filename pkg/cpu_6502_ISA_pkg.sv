@@ -48,10 +48,13 @@ package cpu_6502_ISA_pkg;
         ALU_ADDRESS
     } ctrl_mux_mem_addr_t;
 
-    typedef enum logic
+    typedef enum logic [1:0]
     {
         IMMEDIATE_SRC,
-        RES_FROM_ALU_SRC
+        // Both these sources are computed the cycle before,
+        // that means that are sent through a FF
+        RES_FROM_ALU_SRC, 
+        DATA_FROM_MEMORY_SRC
     } ctrl_mux_A_t;
 
     typedef enum logic
@@ -71,13 +74,20 @@ package cpu_6502_ISA_pkg;
         FROM_CTRL
     } ctrl_mux_dec_ctrl_t;
 
-    typedef enum logic [2:0]
+    // TODO Remove addressing modes from ALU?
+    // Hacer caso A GeGy???
+    typedef enum logic [3:0]
     {
         ALU_NOP,
         ALU_BYPASS_A,
         ALU_BYPASS_B,
         ALU_ADD,
-        ALU_ADD_ZEROPAGE
+        ALU_ADD_ZEROPAGE,
+        ALU_SUB,
+        ALU_AND,
+        ALU_OR,
+        ALU_XOR,
+        ALU_CMP
     } alu_op_t;
 
     // Implicit Instructions
@@ -176,5 +186,16 @@ package cpu_6502_ISA_pkg;
     parameter logic [2:0] G3_ABS   = 3'b011;
     parameter logic [2:0] G3_ZPG_X = 3'b101;
     parameter logic [2:0] G3_ABS_X = 3'b111;
+
+    // Full opcodes
+    parameter logic [1:0] G1_CC = 2'b01;
+    parameter logic [`BYTE-1:0] ORA_IMM =           {ORA, G1_IMM, G1_CC};
+    parameter logic [`BYTE-1:0] ORA_ZPG =           {ORA, G1_ZPG, G1_CC};
+    parameter logic [`BYTE-1:0] ORA_ZPG_X =         {ORA, G1_ZPG_X, G1_CC};
+    parameter logic [`BYTE-1:0] ORA_ABS =           {ORA, G1_ABS, G1_CC};
+    parameter logic [`BYTE-1:0] ORA_ABS_X =         {ORA, G1_ABS_X, G1_CC};
+    parameter logic [`BYTE-1:0] ORA_ABS_Y =         {ORA, G1_ABS_Y, G1_CC};
+    parameter logic [`BYTE-1:0] ORA_INDIRECT_X =    {ORA, G1_IND1_X, G1_CC};
+    parameter logic [`BYTE-1:0] ORA_INDIRECT_Y =    {ORA, G1_IND2_Y, G1_CC};
 
 endpackage : cpu_6502_ISA_pkg
