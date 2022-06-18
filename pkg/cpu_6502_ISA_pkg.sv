@@ -35,7 +35,7 @@ package cpu_6502_ISA_pkg;
         FETCH,
         EX_FOP1, // EXECUTE or Fetch Operand 1 (IND/ABS)
         FOP2,    // Fetch Operand 2 (IND)
-        EX_ABS,
+        EX_ABS_ZPG,
         EX_IND
     } ctrl_state_t;
 

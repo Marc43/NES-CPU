@@ -52,11 +52,11 @@ module ctrl_t
                 EX_FOP1: begin
                     // Needs to fetch operand and memory is not valid
                     if (needs_fop_ongoing && (!mem_valid_i)) begin
-                        next_state = state;
+                        next_state = EX_FOP1;
                     end
                     // Any of the absolute modes whenever memory is valid
-                    else if ((addressing_mode_i == ABSOLUTE) || (addressing_mode_i == ABSOLUTE_X) || (addressing_mode_i == ABSOLUTE_Y)) begin
-                        next_state = EX_ABS;
+                    else if (needs_fop_ongoing && !((addressing_mode_i == INDIRECT_X) || addressing_mode_i == INDIRECT_Y)) begin
+                        next_state = EX_ABS_ZPG;
                     end
                     // Any of the indirect modes whenever memory is valid
                     else if ((addressing_mode_i == INDIRECT_X) || (addressing_mode_i == INDIRECT_Y)) begin
@@ -72,7 +72,7 @@ module ctrl_t
                     next_state = mem_valid_i ? EX_IND : state;
                 end
                 EX_IND:     next_state = FETCH;
-                EX_ABS:     next_state = FETCH;
+                EX_ABS: next_state = FETCH;
             endcase
         end
     end
@@ -138,7 +138,7 @@ module ctrl_t
                                 (addressing_mode_i == INDIRECT_X)   || (addressing_mode_i == INDIRECT_Y)    || (addressing_mode_i == ZERO_PAGE)     ||
                                 (addressing_mode_i == ZERO_PAGE_X)  || (addressing_mode_i == ZERO_PAGE_Y);
 
-    assign global_mux_dec_ctrl_ctrl = ((state == FETCH) || ((state == EX_FOP1) || (state == FOP2)) && (needs_fop_ongoing)) ? FROM_CTRL : FROM_DECODER;
+    assign global_mux_dec_ctrl_ctrl = ((state == FETCH) || (((state == EX_FOP1) || (state == FOP2)) && (needs_fop_ongoing))) ? FROM_CTRL : FROM_DECODER;
 
     // If not fetching, choose 1, which contains zeroes, else, let the incremented PC (PC_Q = PC_D + 3)
     assign block_pc_o = (state != FETCH) ? 1'b1 : 1'b0;

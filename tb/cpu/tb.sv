@@ -46,7 +46,7 @@ module tb();
     initial begin
         @(negedge rst);
 
-        repeat (1000) @(posedge clk);
+        repeat (50) @(posedge clk);
 
         $finish();
 

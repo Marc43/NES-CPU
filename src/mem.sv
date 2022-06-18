@@ -33,9 +33,10 @@ module mem_t
     end
 
     initial begin
-        for (int i = 0; i < (2**MEM_ADDR_SIZE)-1; i++) begin
-            if ((i%3)==0) memory_array[i] = ORA_IMM;
-            else memory_array[i] = i;
+        for (int i = 0; i < (2**MEM_ADDR_SIZE)-1; i+=3) begin
+            memory_array[i] = ORA_ZPG;
+            memory_array[i+1] = i+1; // 1, 4, 8, 12, ... (IMM used when computing ZPG points to itself)
+            memory_array[i+2] = i+1;
         end
     end
 

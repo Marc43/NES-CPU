@@ -251,6 +251,6 @@ module cpu_t
         .reg_read_data_o(reg_read_data)
     );
 
-    assign mem_addr_o = fe_mem_addr;
+    assign mem_addr_o = (cpu_ctrl_mux_mem_addr == PC_FETCH_ADDRESS) ? fe_mem_addr : alu_res;
 
 endmodule : cpu_t

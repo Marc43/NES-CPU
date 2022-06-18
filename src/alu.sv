@@ -25,8 +25,6 @@ module alu_t
                 ALU_BYPASS_A:       res = op_A_i;
                 ALU_BYPASS_B:       res = op_B_i;
                 ALU_ADD:            res = op_A_i + op_B_i;
-                // TODO Remove zeropage! Apply shit that has to do with
-                // addressing modes outside the ALU?
                 ALU_ADD_ZEROPAGE:   res = {8'h00, op_A_i[`BYTE-1:0] + op_B_i[`BYTE-1:0]};
                 ALU_SUB:            res = op_A_i + op_B_i;
                 ALU_OR:             res = op_A_i | op_B_i;
