@@ -252,5 +252,6 @@ module cpu_t
     );
 
     assign mem_addr_o = (cpu_ctrl_mux_mem_addr == PC_FETCH_ADDRESS) ? fe_mem_addr : alu_res;
+//    assign mem_addr_o = fe_mem_addr;
 
 endmodule : cpu_t

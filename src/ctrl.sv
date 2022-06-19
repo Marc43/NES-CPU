@@ -72,7 +72,7 @@ module ctrl_t
                     next_state = mem_valid_i ? EX_IND : state;
                 end
                 EX_IND:     next_state = FETCH;
-                EX_ABS: next_state = FETCH;
+                EX_ABS_ZPG: next_state = FETCH;
             endcase
         end
     end

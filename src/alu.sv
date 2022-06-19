@@ -13,7 +13,6 @@ module alu_t
     output logic [(2*`BYTE)-1:0] res_o
 );
 
-
     logic [(2*`BYTE)-1:0] res;
 
     always_comb begin
