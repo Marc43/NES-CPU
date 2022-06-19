@@ -37,12 +37,11 @@ module mem_t
         // TODO wrap up memory into a wrapper class and create a virtual method 
         // to be overwritten from the tb so we can intialize opcodes array to
         // the set of opcodes we want
-        opcodes = new[3];
-        opcodes = '{ORA_IMM, ORA_ZPG, ORA_ZPG_X};
+        opcodes = '{ORA_IMM, ORA_ZPG, ORA_ZPG_X, AND_IMM, AND_ZPG, AND_ZPG_X, EOR_IMM, EOR_ZPG, EOR_ZPG_X};
         
         for (int i = 0; i < (2**MEM_ADDR_SIZE)-1; i+=3) begin
             memory_array[i] = opcodes[i%opcodes.size()];
-            memory_array[i+1] = i+1; // 1, 4, 8, 12, ... (IMM used when computing ZPG points to itself)
+            memory_array[i+1] = i+1; // 1, 4, 7, 0xa, 0xd, ... (IMM used when computing ZPG points to itself)
             memory_array[i+2] = i+1;
             opcodes.shuffle();
         end

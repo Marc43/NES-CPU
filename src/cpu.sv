@@ -49,6 +49,23 @@ module cpu_t
         .instr_o(fe_instr)
     );
 
+    // TODO Could use things of fetch, but, sincerely, let's remove fetch
+    // at some point as it is does ZERO things
+    logic [(3*`BYTE)-1:0] mem_data_q;
+    always_ff @(posedge cpu_ctrl_block_pc) begin
+        if (!rstn_i) begin
+            mem_data_q <= 24'h000000;
+        end
+        else if (cpu_ctrl_block_pc) begin
+            mem_data_q <= mem_data_i;
+        end
+    end
+
+    logic [(2*`BYTE)-1:0] mem_data_fetch;
+    logic [`BYTE-1:0] mem_instr_fetch;
+    assign mem_data_fetch = mem_data_q[(3*`BYTE)-1:`BYTE];
+    assign mem_instr_fetch = mem_data_q[`BYTE-1:0];
+
     // decode
     reg_id_t dec_dst_reg_addr, dec_src_reg_addr;
     addressing_mode_t dec_addressing_mode;
@@ -63,8 +80,8 @@ module cpu_t
         .clk_i(clk_i),
         .rstn_i(rstn_i),
 
-        .opcode_i(fe_instr),
-        .data_i(fe_data),
+        .opcode_i(mem_instr_fetch),
+        .data_i(mem_data_fetch),
 
         .src_reg_addr_o(dec_src_reg_addr),
         .dst_reg_addr_o(dec_dst_reg_addr),
@@ -77,7 +94,6 @@ module cpu_t
         .ctrl_mux_B_o(dec_ctrl_mux_B),
 
         .imm_o(dec_imm),
-
         .alu_op_o(dec_alu_op)
     );
 

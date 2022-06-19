@@ -28,6 +28,7 @@ module alu_t
                 ALU_SUB:            res = op_A_i + op_B_i;
                 ALU_OR:             res = op_A_i | op_B_i;
                 ALU_XOR:            res = op_A_i ^ op_B_i;
+                ALU_AND:            res = op_A_i & op_B_i;
                 default:            res = 16'h0000;
             endcase
 

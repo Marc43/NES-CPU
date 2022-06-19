@@ -39,6 +39,7 @@ module tb();
 
         .addr_i(mem_addr),
         .data_i(8'h00),
+        .we_i(1'b0),
 
         .data_o (mem_data_o)
     );
@@ -46,7 +47,12 @@ module tb();
     initial begin
         @(negedge rst);
 
-        repeat (50) @(posedge clk);
+        repeat (50) begin
+            @(posedge clk);
+            // TODO Output addressing modes (in case of simulation)
+            // Compute here the operation, basically to have some
+            // kind of """golden model"""
+        end
 
         $finish();
 

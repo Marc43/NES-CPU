@@ -188,6 +188,7 @@ package cpu_6502_ISA_pkg;
     parameter logic [2:0] G3_ABS_X = 3'b111;
 
     // Full opcodes
+    // Using macros here would be nice, but, honestly, I do not really care ;)
     parameter logic [1:0] G1_CC = 2'b01;
     parameter logic [`BYTE-1:0] ORA_IMM =           {ORA, G1_IMM, G1_CC};
     parameter logic [`BYTE-1:0] ORA_ZPG =           {ORA, G1_ZPG, G1_CC};
@@ -198,4 +199,66 @@ package cpu_6502_ISA_pkg;
     parameter logic [`BYTE-1:0] ORA_INDIRECT_X =    {ORA, G1_IND1_X, G1_CC};
     parameter logic [`BYTE-1:0] ORA_INDIRECT_Y =    {ORA, G1_IND2_Y, G1_CC};
 
+    parameter logic [`BYTE-1:0] AND_IMM =           {AND, G1_IMM, G1_CC};
+    parameter logic [`BYTE-1:0] AND_ZPG =           {AND, G1_ZPG, G1_CC};
+    parameter logic [`BYTE-1:0] AND_ZPG_X =         {AND, G1_ZPG_X, G1_CC};
+    parameter logic [`BYTE-1:0] AND_ABS =           {AND, G1_ABS, G1_CC};
+    parameter logic [`BYTE-1:0] AND_ABS_X =         {AND, G1_ABS_X, G1_CC};
+    parameter logic [`BYTE-1:0] AND_ABS_Y =         {AND, G1_ABS_Y, G1_CC};
+    parameter logic [`BYTE-1:0] AND_INDIRECT_X =    {AND, G1_IND1_X, G1_CC};
+    parameter logic [`BYTE-1:0] AND_INDIRECT_Y =    {AND, G1_IND2_Y, G1_CC};
+
+    parameter logic [`BYTE-1:0] EOR_IMM =           {EOR, G1_IMM, G1_CC};
+    parameter logic [`BYTE-1:0] EOR_ZPG =           {EOR, G1_ZPG, G1_CC};
+    parameter logic [`BYTE-1:0] EOR_ZPG_X =         {EOR, G1_ZPG_X, G1_CC};
+    parameter logic [`BYTE-1:0] EOR_ABS =           {EOR, G1_ABS, G1_CC};
+    parameter logic [`BYTE-1:0] EOR_ABS_X =         {EOR, G1_ABS_X, G1_CC};
+    parameter logic [`BYTE-1:0] EOR_ABS_Y =         {EOR, G1_ABS_Y, G1_CC};
+    parameter logic [`BYTE-1:0] EOR_INDIRECT_X =    {EOR, G1_IND1_X, G1_CC};
+    parameter logic [`BYTE-1:0] EOR_INDIRECT_Y =    {EOR, G1_IND2_Y, G1_CC};
+
+    parameter logic [`BYTE-1:0] ADC_IMM =           {ADC, G1_IMM, G1_CC};
+    parameter logic [`BYTE-1:0] ADC_ZPG =           {ADC, G1_ZPG, G1_CC};
+    parameter logic [`BYTE-1:0] ADC_ZPG_X =         {ADC, G1_ZPG_X, G1_CC};
+    parameter logic [`BYTE-1:0] ADC_ABS =           {ADC, G1_ABS, G1_CC};
+    parameter logic [`BYTE-1:0] ADC_ABS_X =         {ADC, G1_ABS_X, G1_CC};
+    parameter logic [`BYTE-1:0] ADC_ABS_Y =         {ADC, G1_ABS_Y, G1_CC};
+    parameter logic [`BYTE-1:0] ADC_INDIRECT_X =    {ADC, G1_IND1_X, G1_CC};
+    parameter logic [`BYTE-1:0] ADC_INDIRECT_Y =    {ADC, G1_IND2_Y, G1_CC};
+
+    parameter logic [`BYTE-1:0] STA_IMM =           {ADC, G1_IMM, G1_CC};
+    parameter logic [`BYTE-1:0] STA_ZPG =           {ADC, G1_ZPG, G1_CC};
+    parameter logic [`BYTE-1:0] STA_ZPG_X =         {ADC, G1_ZPG_X, G1_CC};
+    parameter logic [`BYTE-1:0] STA_ABS =           {ADC, G1_ABS, G1_CC};
+    parameter logic [`BYTE-1:0] STA_ABS_X =         {ADC, G1_ABS_X, G1_CC};
+    parameter logic [`BYTE-1:0] STA_ABS_Y =         {ADC, G1_ABS_Y, G1_CC};
+    parameter logic [`BYTE-1:0] STA_INDIRECT_X =    {ADC, G1_IND1_X, G1_CC};
+    parameter logic [`BYTE-1:0] STA_INDIRECT_Y =    {ADC, G1_IND2_Y, G1_CC};
+
+    parameter logic [`BYTE-1:0] LDA_IMM =           {ADC, G1_IMM, G1_CC};
+    parameter logic [`BYTE-1:0] LDA_ZPG =           {ADC, G1_ZPG, G1_CC};
+    parameter logic [`BYTE-1:0] LDA_ZPG_X =         {ADC, G1_ZPG_X, G1_CC};
+    parameter logic [`BYTE-1:0] LDA_ABS =           {ADC, G1_ABS, G1_CC};
+    parameter logic [`BYTE-1:0] LDA_ABS_X =         {ADC, G1_ABS_X, G1_CC};
+    parameter logic [`BYTE-1:0] LDA_ABS_Y =         {ADC, G1_ABS_Y, G1_CC};
+    parameter logic [`BYTE-1:0] LDA_INDIRECT_X =    {ADC, G1_IND1_X, G1_CC};
+    parameter logic [`BYTE-1:0] LDA_INDIRECT_Y =    {ADC, G1_IND2_Y, G1_CC};
+
+    parameter logic [`BYTE-1:0] CMP_IMM =           {ADC, G1_IMM, G1_CC};
+    parameter logic [`BYTE-1:0] CMP_ZPG =           {ADC, G1_ZPG, G1_CC};
+    parameter logic [`BYTE-1:0] CMP_ZPG_X =         {ADC, G1_ZPG_X, G1_CC};
+    parameter logic [`BYTE-1:0] CMP_ABS =           {ADC, G1_ABS, G1_CC};
+    parameter logic [`BYTE-1:0] CMP_ABS_X =         {ADC, G1_ABS_X, G1_CC};
+    parameter logic [`BYTE-1:0] CMP_ABS_Y =         {ADC, G1_ABS_Y, G1_CC};
+    parameter logic [`BYTE-1:0] CMP_INDIRECT_X =    {ADC, G1_IND1_X, G1_CC};
+    parameter logic [`BYTE-1:0] CMP_INDIRECT_Y =    {ADC, G1_IND2_Y, G1_CC};
+
+    parameter logic [`BYTE-1:0] SBC_IMM =           {ADC, G1_IMM, G1_CC};
+    parameter logic [`BYTE-1:0] SBC_ZPG =           {ADC, G1_ZPG, G1_CC};
+    parameter logic [`BYTE-1:0] SBC_ZPG_X =         {ADC, G1_ZPG_X, G1_CC};
+    parameter logic [`BYTE-1:0] SBC_ABS =           {ADC, G1_ABS, G1_CC};
+    parameter logic [`BYTE-1:0] SBC_ABS_X =         {ADC, G1_ABS_X, G1_CC};
+    parameter logic [`BYTE-1:0] SBC_ABS_Y =         {ADC, G1_ABS_Y, G1_CC};
+    parameter logic [`BYTE-1:0] SBC_INDIRECT_X =    {ADC, G1_IND1_X, G1_CC};
+    parameter logic [`BYTE-1:0] SBC_INDIRECT_Y =    {ADC, G1_IND2_Y, G1_CC};
 endpackage : cpu_6502_ISA_pkg
