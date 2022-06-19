@@ -66,15 +66,6 @@ module decoder_t
                     G1_ABS_X:   addressing_mode = ABSOLUTE_X;
                 endcase
 
-                if (addressing_mode == IMMEDIATE) begin
-                    ctrl_mux_A = IMMEDIATE_SRC;
-                    ctrl_mux_B = REGISTER_SRC;
-                end
-                else begin
-                    ctrl_mux_A = RES_FROM_ALU_SRC;
-                    ctrl_mux_B = REGISTER_SRC;
-                end
-
                 case (opcode_i[`A_END:`A_START])
                     ORA: begin
                         alu_op = ALU_OR;
@@ -133,6 +124,27 @@ module decoder_t
 
             end
         end
+    end
+
+    always_comb begin
+
+        case (addressing_mode) 
+            IMMEDIATE:begin
+                ctrl_mux_A = IMMEDIATE_SRC;
+                ctrl_mux_B = REGISTER_SRC;
+            end
+            // TODO This will be repeated for suuure
+            ZERO_PAGE:begin
+                ctrl_mux_A = DATA_FROM_MEMORY_SRC;
+                ctrl_mux_B = REGISTER_SRC;
+            end
+            default:begin
+                ctrl_mux_A = RES_FROM_ALU_SRC;
+                ctrl_mux_B = REGISTER_SRC;
+            end
+
+        endcase
+
     end
 
     assign addressing_mode_o = addressing_mode;

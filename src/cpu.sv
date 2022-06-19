@@ -130,7 +130,8 @@ module cpu_t
         case (ctrl_mux_A)
             IMMEDIATE_SRC: out_data_mux_A = dec_imm;
             RES_FROM_ALU_SRC: out_data_mux_A = alu_res_q;
-            default: out_data_mux_A = 16'h0000;
+            DATA_FROM_MEMORY_SRC: out_data_mux_A = mem_data_i[`BYTE-1:0];
+            default: out_data_mux_A = 16'hDEAD;
         endcase
     end
 
@@ -140,7 +141,7 @@ module cpu_t
         case (ctrl_mux_B)
             REGISTER_SRC: out_data_mux_B = reg_read_data;
             ZERO_SRC: out_data_mux_B = 16'h0000;
-            default: out_data_mux_B = 16'h0000;
+            default: out_data_mux_B = 16'hBEEF;
         endcase
     end
 
@@ -185,6 +186,7 @@ module cpu_t
     reg_id_t cpu_ctrl_src_reg_addr;
     ctrl_mux_dec_ctrl_t cpu_ctrl_mux_RF_wenable;
     logic cpu_ctrl_we;
+    addressing_mode_t cpu_ctrl_addressing_mode;
 
     ctrl_t cpu_ctrl
     (
@@ -208,7 +210,8 @@ module cpu_t
         .ctrl_we_o(cpu_ctrl_we),
 
         .ctrl_mux_ALU_o(cpu_ctrl_mux_ALU),
-        .alu_op_o(cpu_ctrl_alu_op)
+        .alu_op_o(cpu_ctrl_alu_op),
+        .addressing_mode_o(cpu_ctrl_addressing_mode)
     );
 
     // RF DEC/CTRL mux
