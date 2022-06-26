@@ -133,8 +133,7 @@ module decoder_t
                 ctrl_mux_A = IMMEDIATE_SRC;
                 ctrl_mux_B = REGISTER_SRC;
             end
-            // TODO This will be repeated for suuure
-            ZERO_PAGE:begin
+            ZERO_PAGE, ABSOLUTE, ZERO_PAGE_X:begin
                 ctrl_mux_A = DATA_FROM_MEMORY_SRC;
                 ctrl_mux_B = REGISTER_SRC;
             end

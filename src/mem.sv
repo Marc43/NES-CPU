@@ -33,20 +33,54 @@ module mem_t
     end
 
     initial begin
-        logic[`BYTE-1:0] opcodes[];
-        // TODO wrap up memory into a wrapper class and create a virtual method 
-        // to be overwritten from the tb so we can intialize opcodes array to
-        // the set of opcodes we want
-        opcodes = '{ORA_IMM, ORA_ZPG, ORA_ZPG_X, AND_IMM, AND_ZPG, AND_ZPG_X, EOR_IMM, EOR_ZPG, EOR_ZPG_X};
-        
-        for (int i = 0; i < (2**MEM_ADDR_SIZE)-1; i+=3) begin
-            memory_array[i] = opcodes[i%opcodes.size()];
-            memory_array[i+1] = i+1; // 1, 4, 7, 0xa, 0xd, ... (IMM used when computing ZPG points to itself)
-            memory_array[i+2] = i+1;
-            opcodes.shuffle();
-        end
+
+//        logic[`BYTE-1:0] opcodes[];
+//        // TODO wrap up memory into a wrapper class and create a virtual method 
+//        // to be overwritten from the tb so we can intialize opcodes array to
+//        // the set of opcodes we want
+//        opcodes = '{ORA_IMM, ORA_ZPG, ORA_ZPG_X, AND_IMM, AND_ZPG, AND_ZPG_X, EOR_IMM, EOR_ZPG, EOR_ZPG_X};
+//        
+//        for (int i = 0; i < (2**MEM_ADDR_SIZE)-1; i+=3) begin
+//            memory_array[i] = opcodes[i%opcodes.size()];
+//            memory_array[i+1] = i+1; // 1, 4, 7, 0xa, 0xd, ... (IMM used when computing ZPG points to itself)
+//            memory_array[i+2] = i+1;
+//            opcodes.shuffle();
+//        end
+
+
+        int i = 0;
+
+        memory_array[i] = ORA_IMM; // <--- load FF in A
+        memory_array[i+1] = 8'hff;
+        memory_array[i+2] = 8'hff;
+        /////////////////////////
+        memory_array[i+3] = AND_IMM; // <--- FF & FF -> A (FF) 
+        memory_array[i+4] = 8'hff;
+        memory_array[i+5] = 8'hff;
+        /////////////////////////
+        memory_array[i+6] = EOR_IMM; // <--- FF ^ FF -> A (00)
+        memory_array[i+7] = 8'hff;
+        memory_array[i+8] = 8'hff;
+        /////////////////////////
+        memory_array[i+9] = ORA_IMM; // <--- 00 | 01 -> A (01)
+        memory_array[i+10] = 8'h01;
+        memory_array[i+11] = 8'h01;
+        ////////////////////////
+        memory_array[i+12] = AND_ZPG; // MEM[01] & A(01) -> A(01)
+        memory_array[i+13] = 8'h01;
+        memory_array[i+14] = 8'h01;
+        ////////////////////////
+        memory_array[i+15] = ORA_ABS; // MEM[0005] & A(01) -> A(FF)
+        memory_array[i+16] = 8'h05;
+        memory_array[i+17] = 8'h00;
+        ////////////////////////
+
     end
 
     assign data_o = data;
 
+
+
 endmodule : mem_t
+
+

@@ -140,7 +140,7 @@ module ctrl_t
             end
             else begin
                 ctrl_mux_A_o = DATA_FROM_MEMORY_SRC;
-                ctrl_mux_B_o = ZERO_SRC;
+                ctrl_mux_B_o = REGISTER_SRC;
                 alu_op_o = ALU_BYPASS_A;
             end
         end
