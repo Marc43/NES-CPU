@@ -83,6 +83,7 @@ package cpu_6502_ISA_pkg;
         ALU_BYPASS_B,
         ALU_ADD,
         ALU_ADD_ZEROPAGE,
+        ALU_ADC,
         ALU_SUB,
         ALU_AND,
         ALU_OR,

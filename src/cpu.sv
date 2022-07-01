@@ -115,7 +115,7 @@ module cpu_t
     alu_op_t cpu_ctrl_alu_op;
 
     // From RF
-    logic [(2*`BYTE)-1:0] reg_read_data;
+    logic [`BYTE-1:0] reg_read_data;
 
     // Register containing result of ALU through a FF
     logic [(2*`BYTE)-1:0] alu_res_q;
@@ -173,6 +173,9 @@ module cpu_t
     // ex
     // TODO Missing branches stuff... (Apart from a hundred other stuff)
     logic [(2*`BYTE)-1:0] alu_res;
+    logic [`BYTE-1:0] status_reg_rf_to_ex;
+    logic [`BYTE-1:0] status_reg_ex_to_rf;
+    logic status_reg_we_en;
     ex_t ex
     (
         .clk_i(clk_i),
@@ -182,8 +185,11 @@ module cpu_t
         .op_B_i(out_data_mux_B),
 
         .alu_op_i(out_alu_op),
-        .alu_res_o(alu_res)
+        .alu_res_o(alu_res),
 
+        .status_reg_i(status_reg_rf_to_ex),
+        .status_reg_o(status_reg_ex_to_rf),
+        .status_reg_we_o(status_reg_we_en)
     );
 
     // This is used to feed the alu
@@ -265,9 +271,14 @@ module cpu_t
         .reg_addr_i(out_reg_id_mux),
 
         .reg_we_i(out_we_mux),
-        .reg_data_i(alu_res), // TODO Mux with memory at some point :)
+        .reg_data_i(alu_res[`BYTE-1:0]), // TODO Mux with memory at some point :)
 
-        .reg_read_data_o(reg_read_data)
+        .reg_read_data_o(reg_read_data),
+
+        // Status register
+        .status_reg_we_i(status_reg_we_en),
+        .status_reg_i(status_reg_ex_to_rf),
+        .status_reg_o(status_reg_rf_to_ex)
     );
 
     assign mem_addr_o = (cpu_ctrl_mux_mem_addr == PC_FETCH_ADDRESS) ? fe_mem_addr : alu_res;

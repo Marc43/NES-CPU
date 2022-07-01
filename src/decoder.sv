@@ -77,10 +77,7 @@ module decoder_t
                         alu_op = ALU_XOR;
                     end
                     ADC: begin
-                        alu_op = ALU_ADD;
-                        // TODO Carry... Maybe the flag modification can be
-                        // implicit to the operation, but I need more
-                        // experience with the ISA to determine that
+                        alu_op = ALU_ADC;
                     end
                     STA: begin
                         we_rf = 0;

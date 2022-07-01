@@ -48,21 +48,21 @@ module mem_t
 //        end
 
 
-        int i = 0;
+        automatic int i = 0;
 
         memory_array[i] = ORA_IMM; // <--- load FF in A
         memory_array[i+1] = 8'hff;
         memory_array[i+2] = 8'hff;
         /////////////////////////
-        memory_array[i+3] = AND_IMM; // <--- FF & FF -> A (FF) 
+        memory_array[i+3] = AND_IMM; // <--- FF & FF -> A(FF) 
         memory_array[i+4] = 8'hff;
         memory_array[i+5] = 8'hff;
         /////////////////////////
-        memory_array[i+6] = EOR_IMM; // <--- FF ^ FF -> A (00)
+        memory_array[i+6] = EOR_IMM; // <--- FF ^ FF -> A(00)
         memory_array[i+7] = 8'hff;
         memory_array[i+8] = 8'hff;
         /////////////////////////
-        memory_array[i+9] = ORA_IMM; // <--- 00 | 01 -> A (01)
+        memory_array[i+9] = ORA_IMM; // <--- 00 | 01 -> A(01)
         memory_array[i+10] = 8'h01;
         memory_array[i+11] = 8'h01;
         ////////////////////////
@@ -74,6 +74,21 @@ module mem_t
         memory_array[i+16] = 8'h05;
         memory_array[i+17] = 8'h00;
         ////////////////////////
+        memory_array[i+18] = AND_IMM; // <---- 00 & A(xx) -> A(00)
+        memory_array[i+19] = 8'h00;
+        memory_array[i+20] = 8'h00;
+        ////////////////////////
+        memory_array[i+21] = ADC_IMM; // <---- 00 + A(00) -> A(00) (flag zero set)
+        memory_array[i+22] = 8'h00;
+        memory_array[i+23] = 8'h00;
+        ////////////////////////
+        memory_array[i+24] = ADC_IMM; // <---- 00 + A(00) -> A(00) (flag zero not set)
+        memory_array[i+25] = 8'hff;
+        memory_array[i+26] = 8'hff;
+        ////////////////////////
+        memory_array[i+27] = ADC_IMM; // <---- 00 + A(00) -> A(00) (flag carry and ovf set)
+        memory_array[i+28] = 8'h01;
+        memory_array[i+29] = 8'hff;
 
     end
 

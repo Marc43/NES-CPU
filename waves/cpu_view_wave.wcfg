@@ -12,13 +12,13 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="409.333 ns"></ZoomStartTime>
-      <ZoomEndTime time="554.134 ns"></ZoomEndTime>
-      <Cursor1Time time="465.000 ns"></Cursor1Time>
+      <ZoomStartTime time="91.667 ns"></ZoomStartTime>
+      <ZoomEndTime time="358.068 ns"></ZoomEndTime>
+      <Cursor1Time time="255.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="356"></NameColumnWidth>
-      <ValueColumnWidth column_width="166"></ValueColumnWidth>
+      <ValueColumnWidth column_width="158"></ValueColumnWidth>
    </column_width_setting>
    <WVObjectSize size="8" />
    <wvobject type="logic" fp_name="/tb/cpu/decoder/clk_i">
@@ -32,6 +32,7 @@
    <wvobject type="group" fp_name="group18">
       <obj_property name="label">Instruction and data</obj_property>
       <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
       <wvobject type="array" fp_name="/tb/memory/addr_i">
          <obj_property name="ElementShortName">addr_i[15:0]</obj_property>
          <obj_property name="ObjectShortName">addr_i[15:0]</obj_property>
@@ -39,6 +40,7 @@
       <wvobject type="array" fp_name="/tb/cpu/pc/pc_o">
          <obj_property name="ElementShortName">pc_o[15:0]</obj_property>
          <obj_property name="ObjectShortName">pc_o[15:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/tb/cpu/alu_res">
          <obj_property name="ElementShortName">alu_res[15:0]</obj_property>
@@ -121,9 +123,57 @@
          <obj_property name="ElementShortName">res_o[15:0]</obj_property>
          <obj_property name="ObjectShortName">res_o[15:0]</obj_property>
       </wvobject>
+      <wvobject type="array" fp_name="/tb/cpu/ex/alu/status_reg_i">
+         <obj_property name="ElementShortName">status_reg_i[7:0]</obj_property>
+         <obj_property name="ObjectShortName">status_reg_i[7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/cpu/ex/alu/status_reg_o">
+         <obj_property name="ElementShortName">status_reg_o[7:0]</obj_property>
+         <obj_property name="ObjectShortName">status_reg_o[7:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/tb/cpu/ex/alu/status_reg_we_o">
+         <obj_property name="ElementShortName">status_reg_we_o</obj_property>
+         <obj_property name="ObjectShortName">status_reg_we_o</obj_property>
+      </wvobject>
       <wvobject type="array" fp_name="/tb/cpu/ex/alu/res">
-         <obj_property name="ElementShortName">res[15:0]</obj_property>
-         <obj_property name="ObjectShortName">res[15:0]</obj_property>
+         <obj_property name="ElementShortName">res[16:0]</obj_property>
+         <obj_property name="ObjectShortName">res[16:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/tb/cpu/ex/alu/carry">
+         <obj_property name="ElementShortName">carry</obj_property>
+         <obj_property name="ObjectShortName">carry</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/tb/cpu/ex/alu/overflow">
+         <obj_property name="ElementShortName">overflow</obj_property>
+         <obj_property name="ObjectShortName">overflow</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/tb/cpu/ex/alu/zero">
+         <obj_property name="ElementShortName">zero</obj_property>
+         <obj_property name="ObjectShortName">zero</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/tb/cpu/ex/alu/negative">
+         <obj_property name="ElementShortName">negative</obj_property>
+         <obj_property name="ObjectShortName">negative</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/tb/cpu/ex/alu/update_status_reg">
+         <obj_property name="ElementShortName">update_status_reg</obj_property>
+         <obj_property name="ObjectShortName">update_status_reg</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/tb/cpu/ex/alu/sA">
+         <obj_property name="ElementShortName">sA</obj_property>
+         <obj_property name="ObjectShortName">sA</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/tb/cpu/ex/alu/sB">
+         <obj_property name="ElementShortName">sB</obj_property>
+         <obj_property name="ObjectShortName">sB</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/tb/cpu/ex/alu/sres">
+         <obj_property name="ElementShortName">sres</obj_property>
+         <obj_property name="ObjectShortName">sres</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/tb/cpu/ex/alu/xilinx_isim_temp_1_ln22_blkAssignCaching">
+         <obj_property name="ElementShortName">xilinx_isim_temp_1_ln22_blkAssignCaching</obj_property>
+         <obj_property name="ObjectShortName">xilinx_isim_temp_1_ln22_blkAssignCaching</obj_property>
       </wvobject>
    </wvobject>
    <wvobject type="group" fp_name="group39">
@@ -147,20 +197,36 @@
          <obj_property name="ObjectShortName">reg_we_i</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/tb/cpu/rf/reg_data_i">
-         <obj_property name="ElementShortName">reg_data_i[15:0]</obj_property>
-         <obj_property name="ObjectShortName">reg_data_i[15:0]</obj_property>
+         <obj_property name="ElementShortName">reg_data_i[7:0]</obj_property>
+         <obj_property name="ObjectShortName">reg_data_i[7:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/tb/cpu/rf/reg_read_data_o">
-         <obj_property name="ElementShortName">reg_read_data_o[15:0]</obj_property>
-         <obj_property name="ObjectShortName">reg_read_data_o[15:0]</obj_property>
+         <obj_property name="ElementShortName">reg_read_data_o[7:0]</obj_property>
+         <obj_property name="ObjectShortName">reg_read_data_o[7:0]</obj_property>
+      </wvobject>
+      <wvobject type="logic" fp_name="/tb/cpu/rf/status_reg_we_i">
+         <obj_property name="ElementShortName">status_reg_we_i</obj_property>
+         <obj_property name="ObjectShortName">status_reg_we_i</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/cpu/rf/status_reg_i">
+         <obj_property name="ElementShortName">status_reg_i[7:0]</obj_property>
+         <obj_property name="ObjectShortName">status_reg_i[7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/cpu/rf/status_reg_o">
+         <obj_property name="ElementShortName">status_reg_o[7:0]</obj_property>
+         <obj_property name="ObjectShortName">status_reg_o[7:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/tb/cpu/rf/reg_read_data">
-         <obj_property name="ElementShortName">reg_read_data[15:0]</obj_property>
-         <obj_property name="ObjectShortName">reg_read_data[15:0]</obj_property>
+         <obj_property name="ElementShortName">reg_read_data[7:0]</obj_property>
+         <obj_property name="ObjectShortName">reg_read_data[7:0]</obj_property>
       </wvobject>
       <wvobject type="array" fp_name="/tb/cpu/rf/regs_data">
          <obj_property name="ElementShortName">regs_data[0:4][7:0]</obj_property>
          <obj_property name="ObjectShortName">regs_data[0:4][7:0]</obj_property>
+      </wvobject>
+      <wvobject type="array" fp_name="/tb/cpu/rf/status_reg">
+         <obj_property name="ElementShortName">status_reg[7:0]</obj_property>
+         <obj_property name="ObjectShortName">status_reg[7:0]</obj_property>
       </wvobject>
    </wvobject>
    <wvobject type="array" fp_name="/tb/cpu/cpu_ctrl/state">
